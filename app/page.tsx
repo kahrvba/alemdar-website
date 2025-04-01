@@ -1,103 +1,477 @@
-import Image from "next/image";
+"use client"
 
+import { useRef, useEffect, useState } from "react"
+import { gsap } from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+import Tilt from 'react-parallax-tilt'
+import { Canvas } from "@react-three/fiber"
+import { Environment, PresentationControls } from "@react-three/drei"
+import { ArrowRight, Cpu, Zap, Lightbulb, ChevronRight, Code, Layers, Sun, Wrench, AudioLines } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import Navbar from "@/components/navbar"
+import Footer from "@/components/footer"
+import HeroScene from "@/components/hero-scene"
+import ProductCard from "@/components/product-card"
+import Model from "@/components/model"
+import { Suspense } from 'react'
+
+// Register ScrollTrigger plugin
+gsap.registerPlugin(ScrollTrigger)
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const mainRef = useRef(null)
+  const heroRef = useRef(null)
+  const productsRef = useRef(null)
+  const innovationRef = useRef(null)
+  const servicesRef = useRef(null)
+  const [activeSection, setActiveSection] = useState("hero")
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+    // Only run on client-side
+    if (typeof window === "undefined") return
+
+    // Hero section animations
+    gsap.fromTo(".hero-title", { opacity: 0, y: 100 }, { opacity: 1, y: 0, duration: 1, ease: "power3.out" })
+
+    gsap.fromTo(
+      ".hero-subtitle",
+      { opacity: 0, y: 50 },
+      { opacity: 1, y: 0, duration: 1, delay: 0.3, ease: "power3.out" },
+    )
+
+    gsap.fromTo(".hero-cta", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1, delay: 0.6, ease: "power3.out" })
+
+    // Products section animations
+    gsap.fromTo(
+      ".product-card",
+      { opacity: 0, y: 50 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.2,
+        scrollTrigger: {
+          trigger: ".products-section",
+          start: "top 80%",
+        },
+      },
+    )
+
+    // Innovation lab animations
+    gsap.fromTo(
+      ".innovation-content",
+      { opacity: 0, x: -50 },
+      {
+        opacity: 1,
+        x: 0,
+        duration: 1,
+        scrollTrigger: {
+          trigger: ".innovation-section",
+          start: "top 70%",
+        },
+      },
+    )
+
+    gsap.fromTo(
+      ".innovation-image",
+      { opacity: 0, scale: 0.8 },
+      {
+        opacity: 1,
+        scale: 1,
+        duration: 1,
+        scrollTrigger: {
+          trigger: ".innovation-section",
+          start: "top 70%",
+        },
+      },
+    )
+
+    // Services animations
+    gsap.fromTo(
+      ".service-card",
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        stagger: 0.15,
+        scrollTrigger: {
+          trigger: ".services-section",
+          start: "top 80%",
+        },
+      },
+    )
+
+    // Scroll tracking for navigation
+    const sections = [
+      { ref: heroRef, id: "hero" },
+      { ref: productsRef, id: "products" },
+      { ref: innovationRef, id: "innovation" },
+      { ref: servicesRef, id: "services" },
+    ]
+
+    sections.forEach(({ ref, id }) => {
+      if (ref.current) {
+        ScrollTrigger.create({
+          trigger: ref.current,
+          start: "top center",
+          end: "bottom center",
+          onEnter: () => setActiveSection(id),
+          onEnterBack: () => setActiveSection(id),
+        })
+      }
+    })
+
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+    }
+  }, [])
+
+  return (
+    <div ref={mainRef} className="bg-black text-white overflow-hidden">
+      <div className="fixed top-0 left-0 w-full z-50 bg-black/80 backdrop-blur-md">
+        <Navbar activeSection={activeSection} />
+      </div>
+
+      {/* Hero Section */}
+      <section ref={heroRef} className="relative min-h-screen flex flex-col items-center justify-center pt-20">
+        <div className="absolute inset-0 z-0">
+          <Canvas>
+            <HeroScene />
+            <Environment preset="city" />
+          </Canvas>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        <div className="container relative z-10 mx-auto px-4 py-32 text-center">
+          <h1 className="hero-title text-4xl md:text-6xl lg:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 mb-6">
+            Powering Innovation Through Technology
+          </h1>
+          <p className="hero-subtitle text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-10">
+            Premium electronics, solar solutions, Arduino innovations, and Sound systems for the future-focused world
+          </p>
+          <div className="hero-cta flex flex-col sm:flex-row gap-4 justify-center">
+            <Button
+              size="lg"
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+            >
+              Explore Products <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+            <Button size="lg" variant="outline" className="border-purple-500 text-purple-500 hover:bg-purple-950/20">
+              Visit Innovation Lab
+            </Button>
+          </div>
+        </div>
+
+        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <ChevronRight className="h-8 w-8 rotate-90 text-purple-500" />
+        </div>
+      </section>
+
+      {/* Products Section */}
+      <section ref={productsRef} className="products-section relative py-20 bg-gradient-to-b from-black to-gray-900">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl md:text-5xl font-bold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
+            Our Premium Product Lines
+          </h2>
+
+          <Tabs defaultValue="electronics" className="w-full">
+            <TabsList className="grid w-full grid-cols-4 mb-12 bg-gray-900/50">
+              <TabsTrigger
+                value="electronics"
+                className="data-[state=active]:bg-blue-900/30 data-[state=active]:text-blue-500 text-blue-400"
+              >
+                <Cpu className="mr-2 h-4 w-4" /> Electronics
+              </TabsTrigger>
+              <TabsTrigger
+                value="solar"
+                className="data-[state=active]:bg-blue-900/30 data-[state=active]:text-blue-500 text-blue-400"
+              >
+                <Zap className="mr-2 h-4 w-4" /> Solar Solutions
+              </TabsTrigger>
+              <TabsTrigger
+                value="arduino"
+                className="data-[state=active]:bg-blue-900/30 data-[state=active]:text-blue-500 text-blue-400"
+              >
+                <Lightbulb className="mr-2 h-4 w-4" /> Arduino
+              </TabsTrigger>
+
+              <TabsTrigger
+                value="arduino"
+                className="data-[state=active]:bg-blue-900/30 data-[state=active]:text-blue-500 text-blue-400"
+              >
+                <AudioLines className="mr-2 h-4 w-4" /> Sound System
+              </TabsTrigger>    
+            </TabsList>
+
+            <TabsContent value="electronics" className="mt-0">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <ProductCard
+                  title="Advanced Circuit Components"
+                  description="High-quality resistors, capacitors, and integrated circuits for your electronic projects."
+                  image="/placeholder.svg?height=300&width=400"
+                  category="electronics"
+                  index={0}
+                />
+                <ProductCard
+                  title="Precision Testing Equipment"
+                  description="Professional-grade oscilloscopes, multimeters, and signal generators."
+                  image="/placeholder.svg?height=300&width=400"
+                  category="electronics"
+                  index={1}
+                />
+                <ProductCard
+                  title="Custom PCB Solutions"
+                  description="Bespoke printed circuit board design and manufacturing services."
+                  image="/placeholder.svg?height=300&width=400"
+                  category="electronics"
+                  index={2}
+                />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="solar" className="mt-0">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <ProductCard
+                  title="High-Efficiency Solar Panels"
+                  description="Next-generation photovoltaic panels with maximum energy conversion."
+                  image="/placeholder.svg?height=300&width=400"
+                  category="solar"
+                  index={0}
+                />
+                <ProductCard
+                  title="Smart Inverter Systems"
+                  description="Intelligent power conversion with real-time monitoring capabilities."
+                  image="/placeholder.svg?height=300&width=400"
+                  category="solar"
+                  index={1}
+                />
+                <ProductCard
+                  title="Energy Storage Solutions"
+                  description="Advanced battery systems for reliable power storage and distribution."
+                  image="/placeholder.svg?height=300&width=400"
+                  category="solar"
+                  index={2}
+                />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="arduino" className="mt-0">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <ProductCard
+                  title="Arduino Development Kits"
+                  description="Comprehensive starter and advanced kits for all skill levels."
+                  image="/placeholder.svg?height=300&width=400"
+                  category="arduino"
+                  index={0}
+                />
+                <ProductCard
+                  title="Specialized Shields & Modules"
+                  description="Expand your Arduino's capabilities with our premium add-on components."
+                  image="/placeholder.svg?height=300&width=400"
+                  category="arduino"
+                  index={1}
+                />
+                <ProductCard
+                  title="Custom Arduino Solutions"
+                  description="Bespoke Arduino-based systems designed for your specific project needs."
+                  image="/placeholder.svg?height=300&width=400"
+                  category="arduino"
+                  index={2}
+                />
+              </div>
+            </TabsContent>
+          </Tabs>
+
+          <div className="text-center mt-16">
+            <Button
+              size="lg"
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+            >
+              View All Products <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Innovation Lab Section */}
+      <section ref={innovationRef} className="innovation-section relative py-24 bg-black">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(67,56,202,0.15),rgba(12,10,9,0))]"></div>
+
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="innovation-content">
+              <h2 className="text-3xl md:text-5xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">
+                Our Innovation Lab
+              </h2>
+              <p className="text-xl text-gray-300 mb-6">
+                Where ideas transform into groundbreaking solutions. Our state-of-the-art innovation lab is the
+                birthplace of next-generation prototypes and Arduino-based products.
+              </p>
+              <div className="space-y-6 mb-8">
+                <div className="flex items-start">
+                  <div className="flex-shrink-0 bg-purple-900/30 p-3 rounded-lg mr-4">
+                    <Code className="h-6 w-6 text-purple-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-purple-300 mb-2">Rapid Prototyping</h3>
+                    <p className="text-gray-400">
+                      Transform concepts into functional prototypes with our advanced fabrication tools and expertise.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="flex-shrink-0 bg-purple-900/30 p-3 rounded-lg mr-4">
+                    <Layers className="h-6 w-6 text-purple-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-purple-300 mb-2">Custom Solutions</h3>
+                    <p className="text-gray-400">
+                      Tailored Arduino-based systems designed to meet your specific requirements and challenges.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="flex-shrink-0 bg-purple-900/30 p-3 rounded-lg mr-4">
+                    <Lightbulb className="h-6 w-6 text-purple-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-purple-300 mb-2">Innovation Workshops</h3>
+                    <p className="text-gray-400">
+                      Collaborative sessions where tech enthusiasts and professionals can develop new ideas.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
+                Explore the Lab <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </div>
+            <div className="innovation-image relative h-[500px] rounded-xl overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 to-blue-900/20 z-10 rounded-xl"></div>
+              <div className="h-full w-full">
+                <Suspense fallback={null}>
+                  <Canvas camera={{ position: [0, 2, 5], fov: 45 }}>
+                    <ambientLight intensity={0.5} />
+                    <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
+                    <PresentationControls
+                      global
+                      speed={2}
+                      zoom={0.1}
+                      rotation={[0, -Math.PI / 4, 0]}
+                      polar={[-Math.PI / 2, Math.PI / 2]}
+                      azimuth={[-Math.PI / 2, Math.PI / 2]}
+                      snap={true}
+                      enabled={true}
+                    >
+                      <Model />
+                    </PresentationControls>
+                    <Environment preset="city" />
+                  </Canvas>
+                </Suspense>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Services Section */}
+      <section ref={servicesRef} className="services-section relative py-24 bg-gradient-to-b from-gray-900 to-black">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl md:text-5xl font-bold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
+            Expert Services
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <Tilt tiltMaxAngleX={15} tiltMaxAngleY={15} scale={1.05}>
+              <Card className="service-card bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700 overflow-hidden">
+                <div className="h-2 bg-gradient-to-r from-blue-500 to-purple-500"></div>
+                <CardContent className="pt-6">
+                  <div className="bg-blue-900/30 p-3 rounded-lg w-fit mb-4">
+                    <Sun className="h-6 w-6 text-blue-400" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-3 text-white">Solar Installation</h3>
+                  <p className="text-gray-400 mb-4">
+                    Professional installation of solar panel systems for residential and commercial properties.
+                  </p>
+                  <Button variant="ghost" className="text-blue-400 hover:text-blue-300 hover:bg-blue-900/20 p-0">
+                    Learn more <ChevronRight className="ml-1 h-4 w-4" />
+                  </Button>
+                </CardContent>
+              </Card>
+            </Tilt>
+
+            <Tilt tiltMaxAngleX={15} tiltMaxAngleY={15} scale={1.05}>
+              <Card className="service-card bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700 overflow-hidden">
+                <div className="h-2 bg-gradient-to-r from-purple-500 to-pink-500"></div>
+                <CardContent className="pt-6">
+                  <div className="bg-purple-900/30 p-3 rounded-lg w-fit mb-4">
+                    <Cpu className="h-6 w-6 text-purple-400" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-3 text-white">Custom Electronics Design</h3>
+                  <p className="text-gray-400 mb-4">
+                    Bespoke electronic system design and development for specialized applications.
+                  </p>
+                  <Button variant="ghost" className="text-purple-400 hover:text-purple-300 hover:bg-purple-900/20 p-0">
+                    Learn more <ChevronRight className="ml-1 h-4 w-4" />
+                  </Button>
+                </CardContent>
+              </Card>
+            </Tilt>
+
+            <Tilt tiltMaxAngleX={15} tiltMaxAngleY={15} scale={1.05}>
+              <Card className="service-card bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700 overflow-hidden">
+                <div className="h-2 bg-gradient-to-r from-pink-500 to-red-500"></div>
+                <CardContent className="pt-6">
+                  <div className="bg-pink-900/30 p-3 rounded-lg w-fit mb-4">
+                    <Wrench className="h-6 w-6 text-pink-400" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-3 text-white">Maintenance & Repair</h3>
+                  <p className="text-gray-400 mb-4">
+                    Expert maintenance and repair services for electronic systems and solar installations.
+                  </p>
+                  <Button variant="ghost" className="text-pink-400 hover:text-pink-300 hover:bg-pink-900/20 p-0">
+                    Learn more <ChevronRight className="ml-1 h-4 w-4" />
+                  </Button>
+                </CardContent>
+              </Card>
+            </Tilt>
+          </div>
+
+          <div className="mt-20 bg-gradient-to-r from-blue-900/30 via-purple-900/30 to-pink-900/30 rounded-xl p-8 md:p-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+              <div>
+                <h3 className="text-2xl md:text-3xl font-bold mb-4 text-white">Ready to Electrify Your Ideas?</h3>
+                <p className="text-gray-300 mb-6">
+                  Contact our team of experts to discuss your project needs and discover how our products and services
+                  can power your innovation.
+                </p>
+                <Button
+                  size="lg"
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                >
+                  Get in Touch
+                </Button>
+              </div>
+              <div className="relative h-64 md:h-full">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-lg"></div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-32 h-32 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 animate-pulse opacity-70"></div>
+                </div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Zap className="h-16 w-16 text-white" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
     </div>
-  );
+  )
 }
+
+// The ArduinoModel component has been replaced with the new Model component
+// The ArduinoModel function has been removed
+
