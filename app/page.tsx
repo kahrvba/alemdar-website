@@ -17,8 +17,9 @@ import ProductCard from "@/components/product-card"
 import Model from "@/components/model"
 import { Suspense } from 'react'
 
-// Register ScrollTrigger plugin
+// Register plugins
 gsap.registerPlugin(ScrollTrigger)
+
 export default function Home() {
   const mainRef = useRef(null)
   const heroRef = useRef(null)
@@ -31,16 +32,54 @@ export default function Home() {
     // Only run on client-side
     if (typeof window === "undefined") return
 
-    // Hero section animations
-    gsap.fromTo(".hero-title", { opacity: 0, y: 100 }, { opacity: 1, y: 0, duration: 1, ease: "power3.out" })
+    // Typing animation
+    const text = "Powering Innovation Through Technology"
+    const heroTitle = document.querySelector('.hero-title')
+    if (!heroTitle) return
 
+    // Clear any existing content
+    heroTitle.textContent = ''
+
+    // Split text into spans for better performance
+    const chars = text.split('')
+    chars.forEach(char => {
+      const span = document.createElement('span')
+      // Add non-breaking space for actual spaces
+      span.textContent = char === ' ' ? '\u00A0' : char
+      // Add a small margin for spaces
+      if (char === ' ') {
+        span.style.marginRight = '0.2em'
+      }
+      span.style.opacity = '0'
+      heroTitle.appendChild(span)
+    })
+
+    // Animate characters with GSAP
+    gsap.to(heroTitle.children, {
+      opacity: 1,
+      duration: 0.05,
+      stagger: 0.05,
+      ease: "none"
+    })
+
+    // Add cursor
+    const cursorSpan = document.createElement('span')
+    cursorSpan.textContent = '|'
+    cursorSpan.className = 'animate-pulse ml-1'
+    heroTitle.appendChild(cursorSpan)
+
+    // Hero section animations
     gsap.fromTo(
       ".hero-subtitle",
       { opacity: 0, y: 50 },
-      { opacity: 1, y: 0, duration: 1, delay: 0.3, ease: "power3.out" },
+      { opacity: 1, y: 0, duration: 1, delay: 0.3, ease: "power3.out" }
     )
 
-    gsap.fromTo(".hero-cta", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1, delay: 0.6, ease: "power3.out" })
+    gsap.fromTo(
+      ".hero-cta",
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 1, delay: 0.6, ease: "power3.out" }
+    )
 
     // Products section animations
     gsap.fromTo(
@@ -55,7 +94,7 @@ export default function Home() {
           trigger: ".products-section",
           start: "top 80%",
         },
-      },
+      }
     )
 
     // Innovation lab animations
@@ -70,7 +109,7 @@ export default function Home() {
           trigger: ".innovation-section",
           start: "top 70%",
         },
-      },
+      }
     )
 
     gsap.fromTo(
@@ -84,7 +123,7 @@ export default function Home() {
           trigger: ".innovation-section",
           start: "top 70%",
         },
-      },
+      }
     )
 
     // Services animations
@@ -100,7 +139,7 @@ export default function Home() {
           trigger: ".services-section",
           start: "top 80%",
         },
-      },
+      }
     )
 
     // Scroll tracking for navigation
@@ -123,10 +162,14 @@ export default function Home() {
       }
     })
 
+    // Cleanup function
     return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+      if (heroTitle) {
+        heroTitle.innerHTML = ''
+      }
     }
-  }, [])
+  }, []) // Empty dependency array means this effect runs once on mount
 
   return (
     <div ref={mainRef} className="bg-black text-white overflow-hidden">
@@ -135,7 +178,11 @@ export default function Home() {
       </div>
 
       {/* Hero Section */}
-      <section ref={heroRef} className="relative min-h-screen flex flex-col items-center justify-center pt-20">
+      <section 
+        ref={heroRef} 
+        className="relative min-h-screen flex flex-col items-center justify-center pt-20"
+        suppressHydrationWarning
+      >
         <div className="absolute inset-0 z-0">
           <Canvas>
             <HeroScene />
@@ -144,21 +191,25 @@ export default function Home() {
         </div>
 
         <div className="container relative z-10 mx-auto px-4 py-32 text-center">
-          <h1 className="hero-title text-4xl md:text-6xl lg:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 mb-6">
-            Powering Innovation Through Technology
+          <h1 className="hero-title text-4xl md:text-6xl lg:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 mb-6 flex justify-center items-center">
+            {/* Content will be added by JavaScript */}
           </h1>
-          <p className="hero-subtitle text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-10">
+          <p className="hero-subtitle text-xl md:text-2xl max-w-3xl mx-auto mb-10 bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
             Premium electronics, solar solutions, Arduino innovations, and Sound systems for the future-focused world
           </p>
           <div className="hero-cta flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               size="lg"
-              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+              className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white"
             >
               Explore Products <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
-            <Button size="lg" variant="outline" className="border-purple-500 text-purple-500 hover:bg-purple-950/20">
-              Visit Innovation Lab
+            <Button
+              size="lg"
+              variant="outline"
+              className="border-2 border-indigo-500 text-indigo-600 hover:bg-indigo-50"
+            >
+              Contact Sales <ChevronRight className="ml-2 h-5 w-5" />
             </Button>
           </div>
         </div>
@@ -169,36 +220,35 @@ export default function Home() {
       </section>
 
       {/* Products Section */}
-      <section ref={productsRef} className="products-section relative py-20 bg-gradient-to-b from-black to-gray-900">
+      <section ref={productsRef} className="products-section relative py-20 bg-white dark:bg-black">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-5xl font-bold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
+          <h2 className="text-3xl md:text-5xl font-bold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
             Our Premium Product Lines
           </h2>
 
           <Tabs defaultValue="electronics" className="w-full">
-            <TabsList className="grid w-full grid-cols-4 mb-12 bg-gray-900/50">
+            <TabsList className="grid w-full grid-cols-4 mb-12 bg-gray-100/50 dark:bg-gray-900/50">
               <TabsTrigger
                 value="electronics"
-                className="data-[state=active]:bg-blue-900/30 data-[state=active]:text-blue-500 text-blue-400"
+                className="data-[state=active]:bg-indigo-100 data-[state=active]:text-indigo-700 text-gray-600 dark:data-[state=active]:bg-blue-900/30 dark:data-[state=active]:text-blue-500 dark:text-blue-400"
               >
                 <Cpu className="mr-2 h-4 w-4" /> Electronics
               </TabsTrigger>
               <TabsTrigger
                 value="solar"
-                className="data-[state=active]:bg-blue-900/30 data-[state=active]:text-blue-500 text-blue-400"
+                className="data-[state=active]:bg-indigo-100 data-[state=active]:text-indigo-700 text-gray-600 dark:data-[state=active]:bg-blue-900/30 dark:data-[state=active]:text-blue-500 dark:text-blue-400"
               >
                 <Zap className="mr-2 h-4 w-4" /> Solar Solutions
               </TabsTrigger>
               <TabsTrigger
                 value="arduino"
-                className="data-[state=active]:bg-blue-900/30 data-[state=active]:text-blue-500 text-blue-400"
+                className="data-[state=active]:bg-indigo-100 data-[state=active]:text-indigo-700 text-gray-600 dark:data-[state=active]:bg-blue-900/30 dark:data-[state=active]:text-blue-500 dark:text-blue-400"
               >
                 <Lightbulb className="mr-2 h-4 w-4" /> Arduino
               </TabsTrigger>
-
               <TabsTrigger
-                value="arduino"
-                className="data-[state=active]:bg-blue-900/30 data-[state=active]:text-blue-500 text-blue-400"
+                value="sound"
+                className="data-[state=active]:bg-indigo-100 data-[state=active]:text-indigo-700 text-gray-600 dark:data-[state=active]:bg-blue-900/30 dark:data-[state=active]:text-blue-500 dark:text-blue-400"
               >
                 <AudioLines className="mr-2 h-4 w-4" /> Sound System
               </TabsTrigger>    
@@ -286,7 +336,7 @@ export default function Home() {
           <div className="text-center mt-16">
             <Button
               size="lg"
-              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+              className="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white dark:from-blue-600 dark:to-purple-600 dark:hover:from-blue-700 dark:hover:to-purple-700"
             >
               View All Products <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
@@ -295,60 +345,60 @@ export default function Home() {
       </section>
 
       {/* Innovation Lab Section */}
-      <section ref={innovationRef} className="innovation-section relative py-24 bg-black">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(67,56,202,0.15),rgba(12,10,9,0))]"></div>
+      <section ref={innovationRef} className="innovation-section relative py-24 bg-white dark:bg-black">
+        <div className="absolute inset-0 dark:bg-[radial-gradient(circle_at_center,rgba(67,56,202,0.15),rgba(12,10,9,0))]"></div>
 
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="innovation-content">
-              <h2 className="text-3xl md:text-5xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">
+              <h2 className="text-3xl md:text-5xl font-bold mb-8 text-black dark:bg-clip-text dark:text-transparent dark:bg-gradient-to-r dark:from-indigo-500 dark:via-purple-500 dark:to-pink-500">
                 Our Innovation Lab
               </h2>
-              <p className="text-xl text-gray-300 mb-6">
+              <p className="text-xl text-gray-600 dark:text-gray-300 mb-6">
                 Where ideas transform into groundbreaking solutions. Our state-of-the-art innovation lab is the
                 birthplace of next-generation prototypes and Arduino-based products.
               </p>
               <div className="space-y-6 mb-8">
                 <div className="flex items-start">
-                  <div className="flex-shrink-0 bg-purple-900/30 p-3 rounded-lg mr-4">
-                    <Code className="h-6 w-6 text-purple-400" />
+                  <div className="flex-shrink-0 bg-indigo-100 dark:bg-indigo-900/30 p-3 rounded-lg mr-4">
+                    <Code className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-semibold text-purple-300 mb-2">Rapid Prototyping</h3>
-                    <p className="text-gray-400">
+                    <h3 className="text-xl font-semibold text-indigo-600 dark:text-indigo-300 mb-2">Rapid Prototyping</h3>
+                    <p className="text-gray-600 dark:text-gray-300">
                       Transform concepts into functional prototypes with our advanced fabrication tools and expertise.
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <div className="flex-shrink-0 bg-purple-900/30 p-3 rounded-lg mr-4">
-                    <Layers className="h-6 w-6 text-purple-400" />
+                  <div className="flex-shrink-0 bg-indigo-100 dark:bg-indigo-900/30 p-3 rounded-lg mr-4">
+                    <Layers className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-semibold text-purple-300 mb-2">Custom Solutions</h3>
-                    <p className="text-gray-400">
+                    <h3 className="text-xl font-semibold text-indigo-600 dark:text-indigo-300 mb-2">Custom Solutions</h3>
+                    <p className="text-gray-600 dark:text-gray-300">
                       Tailored Arduino-based systems designed to meet your specific requirements and challenges.
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <div className="flex-shrink-0 bg-purple-900/30 p-3 rounded-lg mr-4">
-                    <Lightbulb className="h-6 w-6 text-purple-400" />
+                  <div className="flex-shrink-0 bg-indigo-100 dark:bg-indigo-900/30 p-3 rounded-lg mr-4">
+                    <Lightbulb className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-semibold text-purple-300 mb-2">Innovation Workshops</h3>
-                    <p className="text-gray-400">
+                    <h3 className="text-xl font-semibold text-indigo-600 dark:text-indigo-300 mb-2">Innovation Workshops</h3>
+                    <p className="text-gray-600 dark:text-gray-300">
                       Collaborative sessions where tech enthusiasts and professionals can develop new ideas.
                     </p>
                   </div>
                 </div>
               </div>
-              <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
+              <Button className="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white">
                 Explore the Lab <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </div>
             <div className="innovation-image relative h-[500px] rounded-xl overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 to-blue-900/20 z-10 rounded-xl"></div>
+              <div className="absolute inset-0  dark:from-indigo-900/20 dark:to-purple-900/20 z-10 rounded-xl"></div>
               <div className="h-full w-full">
                 <Suspense fallback={null}>
                   <Canvas camera={{ position: [0, 2, 5], fov: 45 }}>
@@ -376,9 +426,9 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section ref={servicesRef} className="services-section relative py-24 bg-gradient-to-b from-gray-900 to-black">
+      <section ref={servicesRef} className="services-section relative py-24 bg-white dark:bg-gradient-to-b dark:from-gray-900 dark:to-black">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-5xl font-bold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
+          <h2 className="text-3xl md:text-5xl font-bold text-center mb-16 text-foreground dark:bg-clip-text dark:text-transparent dark:bg-gradient-to-r dark:from-blue-400 dark:to-purple-600">
             Expert Services
           </h2>
 
@@ -438,7 +488,7 @@ export default function Home() {
             </Tilt>
           </div>
 
-          <div className="mt-20 bg-gradient-to-r from-blue-900/30 via-purple-900/30 to-pink-900/30 rounded-xl p-8 md:p-12">
+          <div className="mt-20 bg-black rounded-xl p-8 md:p-12">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <div>
                 <h3 className="text-2xl md:text-3xl font-bold mb-4 text-white">Ready to Electrify Your Ideas?</h3>

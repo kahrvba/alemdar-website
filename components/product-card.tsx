@@ -42,7 +42,7 @@ export default function ProductCard({ title, description, image, category, index
       transition={{ duration: 0.5, delay: index * 0.1 }}
     >
       <Card
-        className="overflow-hidden bg-gray-900/50 border-gray-800 transition-all duration-300 hover:border-gray-700"
+        className="overflow-hidden bg-gray-900 border-gray-800 transition-all duration-300 hover:border-gray-700 dark:bg-gray-900/50"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >

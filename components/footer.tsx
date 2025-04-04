@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui/separator"
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-950 border-t border-gray-800">
+    <footer className="bg-white dark:bg-black border-t border-black/20 dark:border-border">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           <div>
@@ -40,7 +40,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="font-bold text-lg mb-6 text-white">Quick Links</h3>
+            <h3 className="font-bold text-lg mb-6 text-black dark:text-white">Quick Links</h3>
             <ul className="space-y-4">
               <li>
                 <Link href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
@@ -71,7 +71,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="font-bold text-lg mb-6 text-white">Contact</h3>
+            <h3 className="font-bold text-lg mb-6 text-black dark:text-white">Contact</h3>
             <ul className="space-y-4">
               <li className="flex items-start">
                 <MapPin className="h-5 w-5 text-blue-400 mr-3 mt-0.5" />
@@ -89,7 +89,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="font-bold text-lg mb-6 text-white">Newsletter</h3>
+            <h3 className="font-bold text-lg mb-6 text-black dark:text-white">Newsletter</h3>
             <p className="text-gray-400 mb-4">
               Subscribe to our newsletter for the latest updates on products and innovations.
             </p>

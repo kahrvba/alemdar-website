@@ -3,9 +3,11 @@
 import { useRef } from "react"
 import { useFrame } from "@react-three/fiber"
 import { Float, MeshDistortMaterial } from "@react-three/drei"
+import { useTheme } from "next-themes"
 import type * as THREE from "three"
 
 export default function HeroScene() {
+  const { resolvedTheme } = useTheme()
   const particlesRef = useRef<THREE.Points>(null)
   const sphereRef = useRef<THREE.Mesh>(null)
 
@@ -31,11 +33,13 @@ export default function HeroScene() {
     }
   })
 
+  const isDark = resolvedTheme === "dark"
+
   return (
     <>
-      <color attach="background" args={["#000000"]} />
-      <ambientLight intensity={0.2} />
-      <directionalLight position={[10, 10, 5]} intensity={1} />
+      <color attach="background" args={[isDark ? "#030712" : "#ffffff"]} />
+      <ambientLight intensity={isDark ? 0.1 : 0.2} />
+      <directionalLight position={[10, 10, 5]} intensity={isDark ? 0.5 : 1} />
 
       {/* Particles */}
       <points ref={particlesRef}>
@@ -45,7 +49,13 @@ export default function HeroScene() {
             args={[positions, 3]}
           />
         </bufferGeometry>
-        <pointsMaterial size={0.05} color="#4f46e5" sizeAttenuation transparent opacity={0.8} />
+        <pointsMaterial 
+          size={0.05} 
+          color={isDark ? "#4f46e5" : "#6366f1"} 
+          sizeAttenuation 
+          transparent 
+          opacity={isDark ? 0.8 : 0.6} 
+        />
       </points>
 
       {/* Center sphere */}
@@ -53,12 +63,12 @@ export default function HeroScene() {
         <mesh ref={sphereRef} position={[0, 0, 0]}>
           <sphereGeometry args={[2, 64, 64]} />
           <MeshDistortMaterial
-            color="#4f46e5"
+            color={isDark ? "#4f46e5" : "#6366f1"}
             attach="material"
             distort={0.4}
             speed={1.5}
-            roughness={0.2}
-            metalness={0.8}
+            roughness={isDark ? 0.3 : 0.2}
+            metalness={isDark ? 0.9 : 0.8}
           />
         </mesh>
       </Float>
@@ -66,12 +76,24 @@ export default function HeroScene() {
       {/* Orbital rings */}
       <mesh rotation={[Math.PI / 2, 0, 0]}>
         <torusGeometry args={[3.5, 0.05, 16, 100]} />
-        <meshStandardMaterial color="#a855f7" emissive="#a855f7" emissiveIntensity={0.5} transparent opacity={0.6} />
+        <meshStandardMaterial 
+          color={isDark ? "#4338ca" : "#818cf8"} 
+          emissive={isDark ? "#4338ca" : "#818cf8"} 
+          emissiveIntensity={isDark ? 0.8 : 0.5} 
+          transparent 
+          opacity={isDark ? 0.8 : 0.6} 
+        />
       </mesh>
 
       <mesh rotation={[Math.PI / 3, Math.PI / 6, 0]}>
         <torusGeometry args={[4.5, 0.05, 16, 100]} />
-        <meshStandardMaterial color="#3b82f6" emissive="#3b82f6" emissiveIntensity={0.5} transparent opacity={0.6} />
+        <meshStandardMaterial 
+          color={isDark ? "#4f46e5" : "#6366f1"} 
+          emissive={isDark ? "#4f46e5" : "#6366f1"} 
+          emissiveIntensity={isDark ? 0.8 : 0.5} 
+          transparent 
+          opacity={isDark ? 0.8 : 0.6} 
+        />
       </mesh>
     </>
   )
