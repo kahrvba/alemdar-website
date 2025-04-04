@@ -178,11 +178,7 @@ export default function Home() {
       </div>
 
       {/* Hero Section */}
-      <section 
-        ref={heroRef} 
-        className="relative min-h-screen flex flex-col items-center justify-center pt-20"
-        suppressHydrationWarning
-      >
+      <section ref={heroRef} className="relative min-h-screen flex flex-col items-center justify-center pt-20">
         <div className="absolute inset-0 z-0">
           <Canvas>
             <HeroScene />
