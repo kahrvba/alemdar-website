@@ -13,9 +13,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import HeroScene from "@/components/hero-scene"
-import ProductCard from "@/components/product-card"
 import Model from "@/components/model"
 import { Suspense } from 'react'
+import Electronics from "@/components/elecrtocisfetchedProducts"
+import Arduino from "@/components/arduinofetchedProducts"
+import Solar from "@/components/solarfetchedProducts"
+import SoundProducts from "@/components/soundfetchedProducts"
 
 // Register plugins
 gsap.registerPlugin(ScrollTrigger)
@@ -26,7 +29,9 @@ export default function Home() {
   const productsRef = useRef(null)
   const innovationRef = useRef(null)
   const servicesRef = useRef(null)
+  const contactRef = useRef<HTMLElement>(null)
   const [activeSection, setActiveSection] = useState("hero")
+  
 
   useEffect(() => {
     // Only run on client-side
@@ -148,6 +153,7 @@ export default function Home() {
       { ref: productsRef, id: "products" },
       { ref: innovationRef, id: "innovation" },
       { ref: servicesRef, id: "services" },
+      { ref: contactRef, id: "contact" },
     ]
 
     sections.forEach(({ ref, id }) => {
@@ -178,7 +184,11 @@ export default function Home() {
       </div>
 
       {/* Hero Section */}
-      <section ref={heroRef} className="relative min-h-screen flex flex-col items-center justify-center pt-20">
+      <section 
+        id="hero"
+        ref={heroRef} 
+        className="relative min-h-screen flex flex-col items-center justify-center pt-20"
+      >
         <div className="absolute inset-0 z-0">
           <Canvas>
             <HeroScene />
@@ -216,25 +226,29 @@ export default function Home() {
       </section>
 
       {/* Products Section */}
-      <section ref={productsRef} className="products-section relative py-20 bg-white dark:bg-black">
+      <section 
+        id="products"
+        ref={productsRef} 
+        className="products-section relative py-20 bg-white dark:bg-black"
+      >
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-5xl font-bold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
             Our Premium Product Lines
           </h2>
 
-          <Tabs defaultValue="electronics" className="w-full">
+          <Tabs defaultValue="solar" className="w-full">
             <TabsList className="grid w-full grid-cols-4 mb-12 bg-gray-100/50 dark:bg-gray-900/50">
-              <TabsTrigger
-                value="electronics"
-                className="data-[state=active]:bg-indigo-100 data-[state=active]:text-indigo-700 text-gray-600 dark:data-[state=active]:bg-blue-900/30 dark:data-[state=active]:text-blue-500 dark:text-blue-400"
-              >
-                <Cpu className="mr-2 h-4 w-4" /> Electronics
-              </TabsTrigger>
               <TabsTrigger
                 value="solar"
                 className="data-[state=active]:bg-indigo-100 data-[state=active]:text-indigo-700 text-gray-600 dark:data-[state=active]:bg-blue-900/30 dark:data-[state=active]:text-blue-500 dark:text-blue-400"
               >
                 <Zap className="mr-2 h-4 w-4" /> Solar Solutions
+              </TabsTrigger>
+              <TabsTrigger
+                value="electronics"
+                className="data-[state=active]:bg-indigo-100 data-[state=active]:text-indigo-700 text-gray-600 dark:data-[state=active]:bg-blue-900/30 dark:data-[state=active]:text-blue-500 dark:text-blue-400"
+              >
+                <Cpu className="mr-2 h-4 w-4" /> Electronics
               </TabsTrigger>
               <TabsTrigger
                 value="arduino"
@@ -250,89 +264,27 @@ export default function Home() {
               </TabsTrigger>    
             </TabsList>
 
-            <TabsContent value="electronics" className="mt-0">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <ProductCard
-                  title="Advanced Circuit Components"
-                  description="High-quality resistors, capacitors, and integrated circuits for your electronic projects."
-                  image="/placeholder.svg?height=300&width=400"
-                  category="electronics"
-                  index={0}
-                />
-                <ProductCard
-                  title="Precision Testing Equipment"
-                  description="Professional-grade oscilloscopes, multimeters, and signal generators."
-                  image="/placeholder.svg?height=300&width=400"
-                  category="electronics"
-                  index={1}
-                />
-                <ProductCard
-                  title="Custom PCB Solutions"
-                  description="Bespoke printed circuit board design and manufacturing services."
-                  image="/placeholder.svg?height=300&width=400"
-                  category="electronics"
-                  index={2}
-                />
-              </div>
+            <TabsContent value="solar" className="mt-0">
+              <Solar />
             </TabsContent>
 
-            <TabsContent value="solar" className="mt-0">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <ProductCard
-                  title="High-Efficiency Solar Panels"
-                  description="Next-generation photovoltaic panels with maximum energy conversion."
-                  image="/placeholder.svg?height=300&width=400"
-                  category="solar"
-                  index={0}
-                />
-                <ProductCard
-                  title="Smart Inverter Systems"
-                  description="Intelligent power conversion with real-time monitoring capabilities."
-                  image="/placeholder.svg?height=300&width=400"
-                  category="solar"
-                  index={1}
-                />
-                <ProductCard
-                  title="Energy Storage Solutions"
-                  description="Advanced battery systems for reliable power storage and distribution."
-                  image="/placeholder.svg?height=300&width=400"
-                  category="solar"
-                  index={2}
-                />
-              </div>
+            <TabsContent value="electronics" className="mt-0">
+              <Electronics />
             </TabsContent>
 
             <TabsContent value="arduino" className="mt-0">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <ProductCard
-                  title="Arduino Development Kits"
-                  description="Comprehensive starter and advanced kits for all skill levels."
-                  image="/placeholder.svg?height=300&width=400"
-                  category="arduino"
-                  index={0}
-                />
-                <ProductCard
-                  title="Specialized Shields & Modules"
-                  description="Expand your Arduino's capabilities with our premium add-on components."
-                  image="/placeholder.svg?height=300&width=400"
-                  category="arduino"
-                  index={1}
-                />
-                <ProductCard
-                  title="Custom Arduino Solutions"
-                  description="Bespoke Arduino-based systems designed for your specific project needs."
-                  image="/placeholder.svg?height=300&width=400"
-                  category="arduino"
-                  index={2}
-                />
-              </div>
+              <Arduino />
+            </TabsContent>
+
+            <TabsContent value="sound" className="mt-0">
+              <SoundProducts />
             </TabsContent>
           </Tabs>
 
           <div className="text-center mt-16">
             <Button
               size="lg"
-              className="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white dark:from-blue-600 dark:to-purple-600 dark:hover:from-blue-700 dark:hover:to-purple-700"
+              className="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white dark:from-blue-600 dark:to-purple-500 dark:hover:from-blue-700 dark:hover:to-purple-700"
             >
               View All Products <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
@@ -341,7 +293,11 @@ export default function Home() {
       </section>
 
       {/* Innovation Lab Section */}
-      <section ref={innovationRef} className="innovation-section relative py-24 bg-white dark:bg-black">
+      <section 
+        id="innovation"
+        ref={innovationRef} 
+        className="innovation-section relative py-24 bg-white dark:bg-black"
+      >
         <div className="absolute inset-0 dark:bg-[radial-gradient(circle_at_center,rgba(67,56,202,0.15),rgba(12,10,9,0))]"></div>
 
         <div className="container mx-auto px-4">
@@ -422,7 +378,11 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section ref={servicesRef} className="services-section relative py-24 bg-white dark:bg-gradient-to-b dark:from-gray-900 dark:to-black">
+      <section 
+        id="services"
+        ref={servicesRef} 
+        className="services-section relative py-24 bg-white dark:bg-black"
+      >
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-5xl font-bold text-center mb-16 text-foreground dark:bg-clip-text dark:text-transparent dark:bg-gradient-to-r dark:from-blue-400 dark:to-purple-600">
             Expert Services
@@ -513,7 +473,7 @@ export default function Home() {
         </div>
       </section>
 
-      <Footer />
+      <Footer contactRef={contactRef as React.RefObject<HTMLElement>} />
     </div>
   )
 }

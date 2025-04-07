@@ -39,34 +39,14 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 72.2% 50.6%;
-    --primary-foreground: 0 85.7% 97.3%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 72.2% 50.6%;
-  }
-}
-
+/* Base styles */
 body {
   background: hsl(var(--background));
   color: hsl(var(--foreground));
   font-family: var(--font-sans);
 }
 
+/* Dark mode styles */
 .dark {
   --background: hsl(74, 84%, 5%);
   --foreground: hsl(210 40% 98%);
@@ -102,6 +82,7 @@ body {
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* Theme inline styles */
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -140,6 +121,7 @@ body {
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+/* Base layer */
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -152,6 +134,7 @@ body {
   }
 }
 
+/* Animation keyframes */
 @keyframes pulse {
   0%, 100% {
     opacity: 1;
@@ -164,4 +147,33 @@ body {
 .animate-pulse {
   animation: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   margin-left: 0.1em;
+}
+
+/* 404 Page Styles - Isolated */
+.error-page-404 {
+  @apply min-h-screen flex items-center justify-center pt-20 bg-white dark:bg-black;
+}
+
+.error-page-404 .four_zero_four_bg {
+  @apply relative w-full;
+  background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
+  background-position: center;
+  height: 400px;
+  background-repeat: no-repeat;
+}
+
+.error-page-404 .four_zero_four_bg h1 {
+  @apply text-center text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500;
+}
+
+.error-page-404 .contant_box_404 {
+  @apply -mt-[50px] text-center;
+}
+
+.error-page-404 .contant_box_404 h3 {
+  @apply text-2xl mb-4 text-white;
+}
+
+.error-page-404 .contant_box_404 p {
+  @apply text-gray-400 mb-6;
 }
