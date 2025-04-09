@@ -9,7 +9,7 @@ export function invalidateCache(endpoints: string[]): void {
     // Find all cache keys that match this endpoint
     const cacheKeys = Array.from(apiCache.getKeys())
       .filter(key => key.startsWith(endpoint));
-    
+
     // Delete each matching cache entry
     cacheKeys.forEach(key => {
       console.log(`Invalidating cache for: ${key}`);
@@ -31,6 +31,8 @@ export function invalidateAllCache(): void {
  * @param category The category to invalidate
  */
 export function invalidateCategoryCache(category: string): void {
+  // The category parameter is kept for API consistency
+  console.log(`Invalidating cache for category: ${category}`);
   invalidateCache(['/api/arduino']);
 }
 
@@ -39,12 +41,16 @@ export function invalidateCategoryCache(category: string): void {
  * @param productId The ID of the updated product
  */
 export function invalidateProductCache(productId: number): void {
+  // The productId parameter is kept for API consistency
+  console.log(`Invalidating cache for product ID: ${productId}`);
   invalidateCache(['/api/arduino']);
 }
 
-export default {
+const cacheInvalidation = {
   invalidateCache,
   invalidateAllCache,
   invalidateCategoryCache,
   invalidateProductCache
 };
+
+export default cacheInvalidation;

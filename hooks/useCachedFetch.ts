@@ -44,7 +44,7 @@ export default function useCachedFetch<T = any>(
   } = cacheOptions;
 
   const cacheKey = `${url}-${JSON.stringify(fetchOptions)}`;
-  
+
   const [state, setState] = useState<FetchState<T>>({
     data: null,
     error: null,
@@ -64,34 +64,34 @@ export default function useCachedFetch<T = any>(
 
     // Check cache first if we should use cache
     if (shouldUseCache && apiCache.has(cacheKey)) {
-      const cachedData = apiCache.get(cacheKey);
-      setState(prev => ({ 
-        ...prev, 
-        data: cachedData, 
-        isLoading: false 
+      const cachedData = apiCache.get<T>(cacheKey);
+      setState(prev => ({
+        ...prev,
+        data: cachedData,
+        isLoading: false
       }));
-      
-      if (onSuccess) onSuccess(cachedData);
-      
+
+      if (onSuccess && cachedData) onSuccess(cachedData);
+
       // If we're not revalidating, return early
       if (!state.isValidating) return;
     }
 
     // Set loading/validating state
-    setState(prev => ({ 
-      ...prev, 
-      isLoading: prev.data === null, 
-      isValidating: true 
+    setState(prev => ({
+      ...prev,
+      isLoading: prev.data === null,
+      isValidating: true
     }));
 
     try {
       // Create abort controller for this request
       const controller = new AbortController();
       const signal = controller.signal;
-      
+
       // Set timeout
       const timeoutId = setTimeout(() => controller.abort(), 10000);
-      
+
       // Merge the signal with any existing signal
       const options = {
         ...fetchOptions,
@@ -100,16 +100,16 @@ export default function useCachedFetch<T = any>(
 
       const response = await fetch(url, options);
       clearTimeout(timeoutId);
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      
-      const data = await response.json();
-      
+
+      const data = await response.json() as T;
+
       // Update cache
-      apiCache.set(cacheKey, data, cacheTTL);
-      
+      apiCache.set<T>(cacheKey, data, cacheTTL);
+
       // Update state
       setState({
         data,
@@ -117,15 +117,15 @@ export default function useCachedFetch<T = any>(
         isLoading: false,
         isValidating: false
       });
-      
+
       setLastFetchTime(Date.now());
       setRetries(0); // Reset retries on success
-      
+
       if (onSuccess) onSuccess(data);
-      
+
     } catch (error: any) {
       console.error(`Error fetching ${url}:`, error);
-      
+
       // Don't update state if the component is unmounted or request was aborted
       if (error.name === 'AbortError') {
         setState(prev => ({
@@ -134,28 +134,28 @@ export default function useCachedFetch<T = any>(
           isLoading: false,
           isValidating: false
         }));
-        
+
         if (onError) onError(new Error('Request timed out'));
         return;
       }
-      
+
       setState(prev => ({
         ...prev,
         error,
         isLoading: false,
         isValidating: false
       }));
-      
+
       // Retry logic
       if (retries < retryCount) {
         const nextRetry = retries + 1;
         setRetries(nextRetry);
-        
+
         // Exponential backoff
         const delay = retryDelay * Math.pow(2, nextRetry - 1);
-        
+
         console.log(`Retrying in ${delay}ms... (Attempt ${nextRetry}/${retryCount})`);
-        
+
         setTimeout(() => {
           fetchData(false); // Don't use cache for retries
         }, delay);
@@ -168,7 +168,7 @@ export default function useCachedFetch<T = any>(
   // Initial fetch
   useEffect(() => {
     fetchData();
-    
+
     // Set up revalidation on focus
     const handleFocus = () => {
       if (revalidateOnFocus) {
@@ -176,7 +176,7 @@ export default function useCachedFetch<T = any>(
         fetchData();
       }
     };
-    
+
     // Set up revalidation on reconnect
     const handleReconnect = () => {
       if (revalidateOnReconnect) {
@@ -184,20 +184,20 @@ export default function useCachedFetch<T = any>(
         fetchData();
       }
     };
-    
+
     if (revalidateOnFocus) {
       window.addEventListener('focus', handleFocus);
     }
-    
+
     if (revalidateOnReconnect) {
       window.addEventListener('online', handleReconnect);
     }
-    
+
     return () => {
       if (revalidateOnFocus) {
         window.removeEventListener('focus', handleFocus);
       }
-      
+
       if (revalidateOnReconnect) {
         window.removeEventListener('online', handleReconnect);
       }
@@ -212,15 +212,15 @@ export default function useCachedFetch<T = any>(
 
   // Function to mutate the data
   const mutate = (newData: T | ((data: T | null) => T)) => {
-    const data = typeof newData === 'function' 
-      ? (newData as Function)(state.data) 
+    const data = typeof newData === 'function'
+      ? (newData as Function)(state.data)
       : newData;
-    
+
     // Update state
     setState(prev => ({ ...prev, data }));
-    
+
     // Update cache
-    apiCache.set(cacheKey, data, cacheTTL);
+    apiCache.set<T>(cacheKey, data, cacheTTL);
   };
 
   return {

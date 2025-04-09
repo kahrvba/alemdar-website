@@ -24,11 +24,11 @@ interface ArduinoProps {
 
 export default function Arduino({ preview = false, categoryFilter = '', sortOption = 'price-asc', searchQuery = '' }: ArduinoProps) {
   // Use our custom hook for cached data fetching
-  const { 
-    data: arduinoProducts, 
-    isLoading, 
-    error, 
-    refetch 
+  const {
+    data: arduinoProducts,
+    isLoading,
+    error,
+    refetch
   } = useCachedFetch<Product[]>('/api/arduino', {}, {
     cacheTTL: 5 * 60 * 1000, // Cache for 5 minutes
     revalidateOnFocus: true,  // Revalidate when tab gets focus
@@ -46,7 +46,7 @@ export default function Arduino({ preview = false, categoryFilter = '', sortOpti
           <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
           <h3 className="text-xl font-semibold text-white mb-2">Unable to Load Products</h3>
           <p className="text-gray-300 mb-6">{error.message || 'An error occurred while loading products.'}</p>
-          <Button 
+          <Button
             onClick={() => {
               // Use the refetch function from our hook
               refetch();
@@ -93,7 +93,7 @@ export default function Arduino({ preview = false, categoryFilter = '', sortOpti
   // Apply category filter if provided - strict equality matching
   if (categoryFilter && categoryFilter.trim() !== '') {
     filteredProducts = filteredProducts.filter(product => product.category === categoryFilter);
-    
+
     // Log for debugging
     console.log(`Filtering by category: "${categoryFilter}"`);
     console.log(`Found ${filteredProducts.length} products with exact category match`);
@@ -131,7 +131,7 @@ export default function Arduino({ preview = false, categoryFilter = '', sortOpti
   const hasNoResults = productsToDisplay.length === 0;
   const isSearching = searchQuery && searchQuery.trim() !== '';
   const isFilteringByCategory = categoryFilter && categoryFilter.trim() !== '';
-  
+
   // Render appropriate message or products
   if (hasNoResults) {
     if (isSearching) {
@@ -142,10 +142,10 @@ export default function Arduino({ preview = false, categoryFilter = '', sortOpti
             <PackageSearch className="h-16 w-16 text-gray-500 mx-auto mb-6" />
             <h3 className="text-xl font-semibold text-white mb-3">No Products Found</h3>
             <p className="text-gray-300 mb-6">
-              We couldn't find any products matching <span className="font-semibold text-blue-400">"{searchQuery}"</span>.
+              We couldn&apos;t find any products matching <span className="font-semibold text-blue-400">&quot;{searchQuery}&quot;</span>.
               Please try a different search term or browse our categories.
             </p>
-            <Button 
+            <Button
               onClick={() => window.location.href = '/products/arduino'}
               className="bg-blue-600 hover:bg-blue-700"
             >
@@ -162,10 +162,10 @@ export default function Arduino({ preview = false, categoryFilter = '', sortOpti
             <Clock className="h-16 w-16 text-amber-500 mx-auto mb-6" />
             <h3 className="text-xl font-semibold text-white mb-3">Coming Soon</h3>
             <p className="text-gray-300 mb-6">
-              Products in the <span className="font-semibold text-amber-400">{categoryFilter}</span> category 
+              Products in the <span className="font-semibold text-amber-400">{categoryFilter}</span> category
               will be available soon. Please check back later or browse our other categories.
             </p>
-            <Button 
+            <Button
               onClick={() => window.location.href = '/products/arduino'}
               className="bg-amber-600 hover:bg-amber-700"
             >
@@ -176,7 +176,7 @@ export default function Arduino({ preview = false, categoryFilter = '', sortOpti
       );
     }
   }
-  
+
   // Normal product display
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">

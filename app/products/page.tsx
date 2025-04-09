@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState, useRef, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
@@ -8,7 +8,8 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ArrowLeft } from "lucide-react"
 
-export default function ProductsPage() {
+// Component that uses searchParams
+function ProductsContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const category = searchParams.get("category")
@@ -101,5 +102,26 @@ export default function ProductsPage() {
 
       <Footer contactRef={contactRef as React.RefObject<HTMLElement>} />
     </div>
+  )
+}
+
+// Main page component with Suspense boundary
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-background flex flex-col">
+        <div className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md">
+          <Navbar activeSection="products" />
+        </div>
+        <div className="flex-1 flex items-center justify-center pt-20">
+          <div className="text-center">
+            <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
+            <p className="mt-4 text-lg text-gray-300">Loading products...</p>
+          </div>
+        </div>
+      </div>
+    }>
+      <ProductsContent />
+    </Suspense>
   )
 }

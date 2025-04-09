@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils"
 
 interface ProductCardProps {
   title: string
-  description: string
+  description?: string
   image: string
   category: string
   index: number
@@ -21,15 +21,15 @@ interface ProductCardProps {
   alt?: string
 }
 
-export default function ProductCard({ 
-  title, 
-  description, 
-  image, 
-  category, 
+export default function ProductCard({
+  title,
+  description,
+  image,
+  category,
   index,
   quantity,
   price,
-  alt 
+  alt
 }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false)
 
@@ -81,7 +81,7 @@ export default function ProductCard({
         <CardContent className="p-5 flex flex-col flex-grow">
           <h3 className="text-xl font-bold mb-2 text-white line-clamp-2">{title}</h3>
           <p className="text-gray-400 mb-4 line-clamp-3 flex-grow">{description}</p>
-          
+
           <div className="flex items-center gap-4 mb-4">
             <div className="flex items-center gap-2 text-gray-300">
               <Package className="h-4 w-4 text-blue-400" />

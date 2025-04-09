@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import pool from "@/lib/db";
+import { PoolClient } from "pg";
 
 export async function GET() {
   let client;
@@ -13,7 +14,7 @@ export async function GET() {
     client = await Promise.race([
       pool.connect(),
       timeoutPromise
-    ]) as any;
+    ]) as PoolClient;
 
     await client.query("SET client_encoding = 'UTF8';");
     await client.query("SET statement_timeout = '5000';"); // 5 second query timeout
@@ -36,11 +37,12 @@ export async function GET() {
     await new Promise(resolve => setTimeout(resolve, 100));
 
     return NextResponse.json(result.rows || [], { headers });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const err = error as Error;
     console.error("Database error: ", error);
 
     // Specific error handling
-    if (error.message.includes('timeout')) {
+    if (err.message && err.message.includes('timeout')) {
       return NextResponse.json(
         { error: "Database request timed out. Please try again." },
         { status: 504 } // Gateway Timeout
@@ -48,7 +50,7 @@ export async function GET() {
     }
 
     return NextResponse.json(
-      { error: "Failed to fetch products", details: error.message },
+      { error: "Failed to fetch products", details: err.message || 'Unknown error' },
       { status: 500 }
     );
   } finally {
