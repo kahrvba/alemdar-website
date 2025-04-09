@@ -21,7 +21,7 @@ export default function Electronics() {
   useEffect(() => {
     const fetchElectronics = async () => {
       try {
-        const response = await fetch('api/electronics');
+        const response = await fetch('/api/electronics');
         const data = await response.json();
         console.log('Products data:', data);
         setElectronicsProducts(data);

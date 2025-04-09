@@ -19,11 +19,14 @@ import Electronics from "@/components/elecrtocisfetchedProducts"
 import Arduino from "@/components/arduinofetchedProducts"
 import Solar from "@/components/solarfetchedProducts"
 import SoundProducts from "@/components/soundfetchedProducts"
+import { useRouter } from "next/navigation"
 
 // Register plugins
 gsap.registerPlugin(ScrollTrigger)
 
 export default function Home() {
+  const router = useRouter()
+  const [tabsValue, setTabsValue] = useState("solar")
   const mainRef = useRef(null)
   const heroRef = useRef(null)
   const productsRef = useRef(null)
@@ -31,7 +34,6 @@ export default function Home() {
   const servicesRef = useRef(null)
   const contactRef = useRef<HTMLElement>(null)
   const [activeSection, setActiveSection] = useState("hero")
-  
 
   useEffect(() => {
     // Only run on client-side
@@ -236,7 +238,7 @@ export default function Home() {
             Our Premium Product Lines
           </h2>
 
-          <Tabs defaultValue="solar" className="w-full">
+          <Tabs defaultValue="solar" className="w-full" onValueChange={setTabsValue}>
             <TabsList className="grid w-full grid-cols-4 mb-12 bg-gray-100/50 dark:bg-gray-900/50">
               <TabsTrigger
                 value="solar"
@@ -273,7 +275,7 @@ export default function Home() {
             </TabsContent>
 
             <TabsContent value="arduino" className="mt-0">
-              <Arduino />
+              <Arduino preview={true} />
             </TabsContent>
 
             <TabsContent value="sound" className="mt-0">
@@ -285,6 +287,22 @@ export default function Home() {
             <Button
               size="lg"
               className="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white dark:from-blue-600 dark:to-purple-500 dark:hover:from-blue-700 dark:hover:to-purple-700"
+              onClick={() => {
+                switch (tabsValue) {
+                  case "arduino":
+                    router.push("/arduino-products")
+                    break;
+                  case "solar":
+                    router.push("/solar-products")
+                    break;
+                  case "electronics":
+                    router.push("/electronics-products")
+                    break;
+                  case "sound":
+                    router.push("/sound-products")
+                    break;
+                }
+              }}
             >
               View All Products <ArrowRight className="ml-2 h-5 w-5" />
             </Button>

@@ -20,7 +20,7 @@ export default function SoundProducts() {
   useEffect(() => {
     const fetchSound = async () => {
       try {
-        const response = await fetch('api/SoundProducts');
+        const response = await fetch('/api/SoundProducts');
         const data = await response.json();
         console.log('Products data:', data);
         setSoundProducts(data);

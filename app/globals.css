@@ -134,6 +134,18 @@ body {
   }
 }
 
+/* Utility layer */
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+  }
+}
+
 /* Animation keyframes */
 @keyframes pulse {
   0%, 100% {

@@ -20,7 +20,7 @@ export default function Solar() {
   useEffect(() => {
     const fetchSolar = async () => {
       try {
-        const response = await fetch('api/solar');
+        const response = await fetch('/api/solar');
         const data = await response.json();
         console.log('Products data:', data);
         setSolarProducts(data);
@@ -79,4 +79,4 @@ export default function Solar() {
     </div>
   );
 }
- 
+

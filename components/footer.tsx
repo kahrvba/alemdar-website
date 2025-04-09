@@ -5,11 +5,11 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 
-export default function Footer({ contactRef }: { contactRef: React.RefObject<HTMLElement> }) {
+export default function Footer({ contactRef }: { contactRef?: React.RefObject<HTMLElement> }) {
   return (
-    <footer 
+    <footer
       ref={contactRef}
-      id="contact" 
+      id="contact"
       className="bg-white dark:bg-black border-t border-black/20 dark:border-border"
     >
       <div className="container mx-auto px-4 py-12">
