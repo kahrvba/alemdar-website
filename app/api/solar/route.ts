@@ -9,14 +9,14 @@ export async function GET() {
     const query = `
       SELECT 
       id,
-      english_name,
-      turkish_name,
+      name,
+      rating,
       image_filename,
       category,
       quantity,
       price,
       description
-      FROM public.main
+      FROM public.solardb
       ORDER BY id ASC
     `;
 

@@ -17,7 +17,6 @@ import Model from "@/components/model"
 import { Suspense } from 'react'
 import Electronics from "@/components/elecrtocisfetchedProducts"
 import Arduino from "@/components/arduinofetchedProducts"
-import Solar from "@/components/solarfetchedProducts"
 import SoundProducts from "@/components/soundfetchedProducts"
 import { useRouter } from "next/navigation"
 
@@ -76,33 +75,42 @@ export default function Home() {
     heroTitle.appendChild(cursorSpan)
 
     // Hero section animations
-    gsap.fromTo(
-      ".hero-subtitle",
-      { opacity: 0, y: 50 },
-      { opacity: 1, y: 0, duration: 1, delay: 0.3, ease: "power3.out" }
-    )
+    const heroSubtitle = document.querySelector(".hero-subtitle")
+    if (heroSubtitle) {
+      gsap.fromTo(
+        heroSubtitle,
+        { opacity: 0, y: 50 },
+        { opacity: 1, y: 0, duration: 1, delay: 0.3, ease: "power3.out" }
+      )
+    }
 
-    gsap.fromTo(
-      ".hero-cta",
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 1, delay: 0.6, ease: "power3.out" }
-    )
+    const heroCta = document.querySelector(".hero-cta")
+    if (heroCta) {
+      gsap.fromTo(
+        heroCta,
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 1, delay: 0.6, ease: "power3.out" }
+      )
+    }
 
     // Products section animations
-    gsap.fromTo(
-      ".product-card",
-      { opacity: 0, y: 50 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.2,
-        scrollTrigger: {
-          trigger: ".products-section",
-          start: "top 80%",
-        },
-      }
-    )
+    const productCards = document.querySelectorAll(".product-card")
+    if (productCards.length > 0) {
+      gsap.fromTo(
+        productCards,
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.2,
+          scrollTrigger: {
+            trigger: ".products-section",
+            start: "top 80%",
+          },
+        }
+      )
+    }
 
     // Innovation lab animations
     gsap.fromTo(
@@ -267,7 +275,7 @@ export default function Home() {
             </TabsList>
 
             <TabsContent value="solar" className="mt-0">
-              <Solar />
+
             </TabsContent>
 
             <TabsContent value="electronics" className="mt-0">

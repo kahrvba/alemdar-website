@@ -2,15 +2,23 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Provider } from "@/components/provider";
+import ConsoleLogger from "@/components/ConsoleLogger";
+import ErrorBoundary from '@/components/ErrorBoundary';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: 'swap',
+  preload: true,
+  adjustFontFallback: true
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: 'swap',
+  preload: true,
+  adjustFontFallback: true
 });
 
 export const viewport: Viewport = {
@@ -38,9 +46,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Provider>
-          {children}
-        </Provider>
+        <ErrorBoundary>
+          <ConsoleLogger />
+          <Provider>
+            {children}
+          </Provider>
+        </ErrorBoundary>
       </body>
     </html>
   );
