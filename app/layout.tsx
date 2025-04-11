@@ -4,7 +4,7 @@ import "./globals.css";
 import { Provider } from "@/components/provider";
 import ConsoleLogger from "@/components/ConsoleLogger";
 import ErrorBoundary from '@/components/ErrorBoundary';
-
+import { SpeedInsights } from "@vercel/speed-insights/next"
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -52,6 +52,7 @@ export default function RootLayout({
             {children}
           </Provider>
         </ErrorBoundary>
+        <SpeedInsights />
       </body>
     </html>
   );
