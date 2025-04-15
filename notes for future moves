@@ -1,0 +1,6 @@
+1- fix the respnsive issues in mobile screen
+2- fix the sidebar panel 
+3- revalidate the API's, manages timeouts, introduce more caching to the API
+4- imporve the caching system, replace the manaual caching handling and use buildin nextjs funcitons
+5- handles different useCases in database
+6- invoke Ads in the website 
