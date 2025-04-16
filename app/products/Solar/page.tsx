@@ -62,7 +62,7 @@ export default function SolarProductsPage() {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [sortOption, setSortOption] = useState("price-asc")
   const [activeFilters, setActiveFilters] = useState(0)
-  const [isLoading, setIsLoading] = useState(true)
+  const [,setIsLoading] = useState(true)
   const [activeTab, setActiveTab] = useState("all")
   const [isMounted, setIsMounted] = useState(false)
   const contactRef = useRef<HTMLElement>(null)
@@ -140,40 +140,54 @@ export default function SolarProductsPage() {
   useEffect(() => {
     if (!isMounted || !statsRef.current) return
 
+    let animated = false; // Flag to track if animation has run
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+          if (entry.isIntersecting && !animated) {
+            animated = true; // Set flag to prevent re-animation
+            
             const counters = statsRef.current?.querySelectorAll(".stat-counter")
             counters?.forEach((counter) => {
               const target = counter as HTMLElement
-              const targetValue = target.getAttribute("data-target") || "0"
+              const targetValue = parseInt(target.getAttribute("data-target") || "0", 10)
               let startValue = 0
-              const duration = 2000
-              const increment = Number.parseInt(targetValue) / (duration / 16)
+              const steps = 60 // More steps for smoother counting
+              const increment = targetValue / steps
+              let currentStep = 0
 
               const updateCounter = () => {
-                startValue += increment
-                if (startValue < Number.parseInt(targetValue)) {
-                  target.textContent = Math.ceil(startValue).toString()
+                currentStep++
+                startValue = Math.min(Math.ceil(increment * currentStep), targetValue)
+                target.textContent = startValue.toString()
+
+                if (currentStep < steps) {
                   requestAnimationFrame(updateCounter)
-                } else {
-                  target.textContent = targetValue
                 }
               }
 
               updateCounter()
             })
+            
+            // Unobserve after animation starts
             observer.unobserve(entry.target)
           }
         })
       },
-      { threshold: 0.5 },
+      { 
+        threshold: 0.5,
+        rootMargin: '-50px'
+      }
     )
 
     observer.observe(statsRef.current)
-    return () => observer.disconnect()
-  }, [isMounted, isLoading])
+    
+    return () => {
+      observer.disconnect()
+      animated = false
+    }
+  }, [isMounted])
 
   // Categories for solar products
   const categories = [
@@ -319,7 +333,7 @@ export default function SolarProductsPage() {
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={{ duration: 0.5, delay: index * 0.2 }}
                 className="bg-gradient-to-br from-gray-900/50 to-gray-800/50 border border-gray-800 rounded-xl p-6 text-center"
               >
                 <div className="flex justify-center mb-4">
