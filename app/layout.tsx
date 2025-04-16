@@ -5,6 +5,7 @@ import { Provider } from "@/components/provider";
 import ConsoleLogger from "@/components/ConsoleLogger";
 import ErrorBoundary from '@/components/ErrorBoundary';
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from "@vercel/analytics/react"
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -53,6 +54,7 @@ export default function RootLayout({
           </Provider>
         </ErrorBoundary>
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
