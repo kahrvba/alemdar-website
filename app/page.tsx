@@ -186,8 +186,8 @@ export default function Home() {
   }, []) // Empty dependency array means this effect runs once on mount
 
   return (
-    <div ref={mainRef} className="bg-black text-white overflow-hidden">
-      <div className="fixed top-0 left-0 w-full z-50 bg-black/80 backdrop-blur-md">
+    <div ref={mainRef} className=" text-white overflow-hidden">
+      <div className="fixed top-0 left-0 w-full z-50  backdrop-blur-md">
         <Navbar activeSection={activeSection} />
       </div>
 
