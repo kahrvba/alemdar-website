@@ -33,9 +33,9 @@ export default function Navbar({ activeSection }: NavbarProps) {
   const navLinks = [
     { href: "/", label: "Home", id: "hero" },
     { href: "/products/categories", label: "Products", id: "products" },
-    { href: "#innovation", label: "Innovation Lab", id: "innovation" },
-    { href: "#services", label: "Services", id: "services" },
-    { href: "#contact", label: "Contact", id: "contact" },
+    { href: "/#innovation", label: "Innovation Lab", id: "innovation" },
+    { href: "/#services", label: "Services", id: "services" },
+    { href: "/#contact", label: "Contact", id: "contact" },
   ]
 
   return (

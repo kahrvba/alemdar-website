@@ -189,7 +189,7 @@ export default function Arduino({ preview = false, categoryFilter = '', sortOpti
               <ProductCard
                 key={product.id}
                 title={product.english_names}
-                category={product.category || "arduino"}
+                category={product.category}
                 quantity={product.quantity}
                 price={product.price}
                 image={product.image_filename || "/placeholder.svg"}
@@ -203,7 +203,7 @@ export default function Arduino({ preview = false, categoryFilter = '', sortOpti
             <ProductCard
               key={product.id}
               title={product.english_names}
-              category={product.category || "arduino"}
+              category={product.category}
               quantity={product.quantity}
               price={product.price}
               image={product.image_filename || "/placeholder.svg"}

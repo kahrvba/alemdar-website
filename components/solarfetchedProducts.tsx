@@ -30,11 +30,11 @@ export default function SolarProducts({
 }: SolarProductsProps) {
   // Use our custom hook for cached data fetching
   const {
-    data: solarProducts,
+    data,
     isLoading,
     error,
     refetch
-  } = useCachedFetch<SolarProduct[]>('/api/solar', {}, {
+  } = useCachedFetch<{ products: SolarProduct[] }>('/api/solar', {}, {
     cacheTTL: 5 * 60 * 1000, // Cache for 5 minutes
     revalidateOnFocus: true,  // Revalidate when tab gets focus
     revalidateOnReconnect: true, // Revalidate when internet reconnects
@@ -43,8 +43,11 @@ export default function SolarProducts({
     onError: (err) => console.error("Failed to fetch solar products:", err)
   });
 
+  // Extract products from the data structure
+  const solarProducts = data?.products || [];
+
   // Filter products based on search query and category
-  const filteredProducts = solarProducts?.filter(product => {
+  const filteredProducts = solarProducts.filter(product => {
     // Filter by search query
     const matchesSearch = searchQuery
       ? product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -57,7 +60,7 @@ export default function SolarProducts({
       : true;
 
     return matchesSearch && matchesCategory;
-  }) || [];
+  });
 
   // Sort products based on sort option
   const sortedProducts = [...filteredProducts].sort((a, b) => {

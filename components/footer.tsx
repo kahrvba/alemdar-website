@@ -23,21 +23,21 @@ export default function Footer({ contactRef }: { contactRef?: React.RefObject<HT
                 ALEMDAR TEKNIK
               </span>
             </Link>
-            <p className="text-gray-400 mb-6">
+            <p className="text-black dark:text-white mb-6">
               More than just a shop—we are a powerhouse of electronics and solar solutions, supplying premium components
               and expert services.
             </p>
             <div className="flex space-x-4">
-              <Link href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
+              <Link href="#" className="text-black dark:text-white hover:text-blue-400 transition-colors">
                 <Facebook className="h-5 w-5" />
               </Link>
-              <Link href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
+              <Link href="#" className="text-black dark:text-white hover:text-blue-400 transition-colors">
                 <Twitter className="h-5 w-5" />
               </Link>
-              <Link href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
+              <Link href="#" className="text-black dark:text-white hover:text-blue-400 transition-colors">
                 <Instagram className="h-5 w-5" />
               </Link>
-              <Link href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
+              <Link href="#" className="text-black dark:text-white hover:text-blue-400 transition-colors">
                 <Linkedin className="h-5 w-5" />
               </Link>
             </div>
@@ -47,27 +47,27 @@ export default function Footer({ contactRef }: { contactRef?: React.RefObject<HT
             <h3 className="font-bold text-lg mb-6 text-black dark:text-white">Quick Links</h3>
             <ul className="space-y-4">
               <li>
-                <Link href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
+                <Link href="#" className="text-black dark:text-white hover:text-blue-400 transition-colors">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
+                <Link href="#" className="text-black dark:text-white hover:text-blue-400 transition-colors">
                   Products
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
+                <Link href="#" className="text-black dark:text-white hover:text-blue-400 transition-colors">
                   Innovation Lab
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
+                <Link href="#" className="text-black dark:text-white hover:text-blue-400 transition-colors">
                   Services
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
+                <Link href="#" className="text-black dark:text-white hover:text-blue-400 transition-colors">
                   Blog
                 </Link>
               </li>
@@ -79,22 +79,22 @@ export default function Footer({ contactRef }: { contactRef?: React.RefObject<HT
             <ul className="space-y-4">
               <li className="flex items-start">
                 <MapPin className="h-5 w-5 text-blue-400 mr-3 mt-0.5" />
-                <span className="text-gray-400">123 Tech Avenue, Innovation District, CA 94103</span>
+                <span className="text-black dark:text-white">123 Tech Avenue, Innovation District, CA 94103</span>
               </li>
               <li className="flex items-center">
                 <Phone className="h-5 w-5 text-blue-400 mr-3" />
-                <span className="text-gray-400">+90 (542) 8772005</span>
+                <span className="text-black dark:text-white">+90 (542) 8772005</span>
               </li>
               <li className="flex items-center">
                 <Mail className="h-5 w-5 text-blue-400 mr-3" />
-                <span className="text-gray-400">info@alemdarTeknik.com</span>
+                <span className="text-black dark:text-white">info@alemdarTeknik.com</span>
               </li>
             </ul>
           </div>
 
           <div>
             <h3 className="font-bold text-lg mb-6 text-black dark:text-white">Newsletter</h3>
-            <p className="text-gray-400 mb-4">
+            <p className="text-black dark:text-white mb-4">
               Subscribe to our newsletter for the latest updates on products and innovations.
             </p>
             <div className="space-y-3">
@@ -115,13 +115,13 @@ export default function Footer({ contactRef }: { contactRef?: React.RefObject<HT
         <div className="flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-500 text-sm">&copy; {new Date().getFullYear()} ALEMDAR TEKNIK. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <Link href="#" className="text-gray-500 hover:text-gray-400 text-sm">
+            <Link href="#" className="text-gray-500 hover:text-black dark:text-white text-sm">
               Privacy Policy
             </Link>
-            <Link href="#" className="text-gray-500 hover:text-gray-400 text-sm">
+            <Link href="#" className="text-gray-500 hover:text-black dark:text-white text-sm">
               Terms of Service
             </Link>
-            <Link href="#" className="text-gray-500 hover:text-gray-400 text-sm">
+            <Link href="#" className="text-gray-500 hover:text-black dark:text-white text-sm">
               Cookie Policy
             </Link>
           </div>

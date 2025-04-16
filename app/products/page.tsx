@@ -1,5 +1,4 @@
 "use client"
-
 import { useEffect, useState, useRef, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Navbar from "@/components/navbar"
@@ -21,25 +20,10 @@ function ProductsContent() {
     if (category) {
       // Map the category parameter to the corresponding route
       const categoryRoutes: Record<string, string> = {
-        "arduino": "/products/arduino",
-        "solar": "/products/Solar",
-        "electronics": "/products/electronics",
-        "sound": "/products/SoundSystem",
-        "3d printer and cnc": "/products/arduino?category=3D%20Printer%20and%20CNC",
-        "connecters": "/products/arduino?category=Connecters",
-        "development Boards": "/products/arduino?category=Development%20Boards",
-        "esp-wifi": "/products/arduino?category=ESP-WiFi",
-        "lcd and display": "/products/arduino?category=LCD%20and%20Display",
-        "led products": "/products/arduino?category=Led%20Products",
-        "motor and motor driver": "/products/arduino?category=Motor%20and%20Motor%20Driver",
-        "plates and breadboards": "/products/arduino?category=Plates%20and%20Breadboards",
-        "power": "/products/arduino?category=Power",
-        "programming and debugger boards": "/products/arduino?category=Programming%20and%20Debugger%20Boards",
-        "raspberry": "/products/arduino?category=Raspberry",
-        "robotic kits & education products": "/products/arduino?category=Robotic%20Kits%20%26%20Education%20Products",
-        "sensors and modules": "/products/arduino?category=Sensors%20and%20Modules",
-        "smd microcontroller": "/products/arduino?category=SMD%20Microcontroller",
-        "wireless communication": "/products/arduino?category=Wireless%20Communication"
+        "arduino": "/products/categories/arduino",
+        "solar": "/products/categories/Solar",
+        "electronics": "/products/categories/electronics",
+        "sound": "/products/categories/SoundSystem",
       }
 
       const route = categoryRoutes[category.toLowerCase()]
@@ -51,7 +35,8 @@ function ProductsContent() {
       }
     } else {
       // If no category is specified, redirect to the categories page
-      router.push("/products/categories")
+      // router.push("/products/categories")
+      setLoading(false)
     }
   }, [category, router])
 

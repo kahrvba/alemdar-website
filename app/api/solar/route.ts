@@ -6,7 +6,8 @@ export async function GET() {
     const client = await pool.connect();
     await client.query("SET client_encoding = 'UTF8';");
 
-    const query = `
+    // First query to get all products
+    const productsQuery = `
       SELECT 
       id,
       name,
@@ -20,10 +21,26 @@ export async function GET() {
       ORDER BY id ASC
     `;
 
-    const result = await client.query(query);
+    // Second query to get category counts
+    const categoryCountQuery = `
+      SELECT 
+        category,
+        COUNT(*) as count
+      FROM public.solardb
+      GROUP BY category
+    `;
+
+    const [productsResult, categoryCountResult] = await Promise.all([
+      client.query(productsQuery),
+      client.query(categoryCountQuery)
+    ]);
+
     client.release();
 
-    return NextResponse.json(result.rows || []);
+    return NextResponse.json({
+      products: productsResult.rows || [],
+      categoryCounts: categoryCountResult.rows || []
+    });
   } catch (error) {
     console.error("Database error: ", error);
     return NextResponse.json({ error: "Failed to fetch products" }, { status: 500 });

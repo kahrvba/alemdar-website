@@ -19,6 +19,7 @@ import Electronics from "@/components/elecrtocisfetchedProducts"
 import Arduino from "@/components/arduinofetchedProducts"
 import SoundProducts from "@/components/soundfetchedProducts"
 import { useRouter } from "next/navigation"
+import SolarProducts from "@/components/solarfetchedProducts"
 // Register plugins
 gsap.registerPlugin(ScrollTrigger)
 
@@ -205,7 +206,7 @@ export default function Home() {
         </div>
 
         <div className="container relative z-10 mx-auto px-4 py-32 text-center">
-          <h1 className="hero-title text-4xl md:text-6xl lg:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 mb-6 flex justify-center items-center">
+          <h1 className="hero-title text-xl md:text-4xl lg:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 mb-6 flex justify-center items-center">
             {/* Content will be added by JavaScript */}
           </h1>
           <p className="hero-subtitle text-xl md:text-2xl max-w-3xl mx-auto mb-10 bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
@@ -218,16 +219,8 @@ export default function Home() {
             >
               Explore Products <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-2 border-indigo-500 text-indigo-600 hover:bg-indigo-50"
-            >
-              Contact Sales <ChevronRight className="ml-2 h-5 w-5" />
-            </Button>
           </div>
         </div>
-
         <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
           <ChevronRight className="h-8 w-8 rotate-90 text-purple-500" />
         </div>
@@ -273,7 +266,7 @@ export default function Home() {
             </TabsList>
 
             <TabsContent value="solar" className="mt-0">
-
+                <SolarProducts preview={true}/>
             </TabsContent>
 
             <TabsContent value="electronics" className="mt-0">
@@ -296,16 +289,16 @@ export default function Home() {
               onClick={() => {
                 switch (tabsValue) {
                   case "arduino":
-                    router.push("/arduino-products")
+                    router.push("/products/categories/arduino")
                     break;
                   case "solar":
-                    router.push("/solar-products")
+                    router.push("/products/categories/Solar")
                     break;
                   case "electronics":
-                    router.push("/electronics-products")
+                    router.push("/products/categories/electronics")
                     break;
                   case "sound":
-                    router.push("/sound-products")
+                    router.push("/products/categories/SoundSystem")
                     break;
                 }
               }}
@@ -440,7 +433,7 @@ export default function Home() {
                   </div>
                   <h3 className="text-xl font-bold mb-3 text-white">Custom Electronics Design</h3>
                   <p className="text-gray-400 mb-4">
-                    Bespoke electronic system design and development for specialized applications.
+                    Be spoke electronic system design and development for specialized applications.
                   </p>
                   <Button variant="ghost" className="text-purple-400 hover:text-purple-300 hover:bg-purple-900/20 p-0">
                     Learn more <ChevronRight className="ml-1 h-4 w-4" />

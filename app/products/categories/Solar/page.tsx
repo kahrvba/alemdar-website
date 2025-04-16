@@ -1,8 +1,6 @@
 "use client"
-
 import type React from "react"
-
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useMemo } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import {
   Search,
@@ -68,19 +66,82 @@ export default function SolarProductsPage() {
   const contactRef = useRef<HTMLElement>(null)
   const heroRef = useRef<HTMLDivElement>(null)
   const statsRef = useRef<HTMLDivElement>(null)
-
-  // Fetch solar products from API
+  const [filterMenuOpen, setFilterMenuOpen] = useState(false)
+  // Fetch solar products and category counts from API
   const {
-    data: solarProductsData,
+    data: apiData,
     isLoading: isProductsLoading,
     error: productsError
-  } = useCachedFetch<SolarProduct[]>('/api/solar', {}, {
-    cacheTTL: 5 * 60 * 1000, // Cache for 5 minutes
+  } = useCachedFetch<{
+    products: SolarProduct[];
+    categoryCounts: { category: string; count: number; }[];
+  }>('/api/solar', {}, {
+    cacheTTL: 5 * 60 * 1000,
     revalidateOnFocus: true,
     revalidateOnReconnect: true,
     retryCount: 3,
     retryDelay: 1000
-  })
+  });
+
+  // Create categories array with counts from database
+  const categories = useMemo(() => {
+    const counts = apiData?.categoryCounts || [];
+    return [
+      { 
+        id: "Solar Panels", 
+        label: "Solar Panels", 
+        count: counts.find(c => c.category === "Solar Panels")?.count || 0 
+      },
+      { 
+        id: "Inverters", 
+        label: "Inverters", 
+        count: counts.find(c => c.category === "Inverters")?.count || 0 
+      },
+      { 
+        id: "Battery Storage", 
+        label: "Battery Storage", 
+        count: counts.find(c => c.category === "Battery Storage")?.count || 0 
+      },
+      { 
+        id: "Mounting Systems", 
+        label: "Mounting Systems", 
+        count: counts.find(c => c.category === "Mounting Systems")?.count || 0 
+      },
+      { 
+        id: "Charge Controllers", 
+        label: "Charge Controllers", 
+        count: counts.find(c => c.category === "Charge Controllers")?.count || 0 
+      },
+      { 
+        id: "Monitoring Systems", 
+        label: "Monitoring Systems", 
+        count: counts.find(c => c.category === "Monitoring Systems")?.count || 0 
+      },
+      { 
+        id: "Solar Accessories", 
+        label: "Solar Accessories", 
+        count: counts.find(c => c.category === "Solar Accessories")?.count || 0 
+      },
+      { 
+        id: "Off-Grid Kits", 
+        label: "Off-Grid Kits", 
+        count: counts.find(c => c.category === "Off-Grid Kits")?.count || 0 
+      },
+      { 
+        id: "Solar Water Heaters", 
+        label: "Solar Water Heaters", 
+        count: counts.find(c => c.category === "Solar Water Heaters")?.count || 0 
+      },
+      { 
+        id: "Solar Lighting", 
+        label: "Solar Lighting", 
+        count: counts.find(c => c.category === "Solar Lighting")?.count || 0 
+      }
+    ];
+  }, [apiData?.categoryCounts]);
+
+  // Update the solarProductsData reference
+  const solarProductsData = apiData?.products;
 
   // Create featured products from API data
   const featuredProducts = solarProductsData
@@ -189,22 +250,6 @@ export default function SolarProductsPage() {
     }
   }, [isMounted])
 
-  // Categories for solar products
-  const categories = [
-    { id: "Solar Panels", label: "Solar Panels", count: 42 },
-    { id: "Inverters", label: "Inverters", count: 28 },
-    { id: "Battery Storage", label: "Battery Storage", count: 15 },
-    { id: "Mounting Systems", label: "Mounting Systems", count: 34 },
-    { id: "Charge Controllers", label: "Charge Controllers", count: 23 },
-    { id: "Monitoring Systems", label: "Monitoring Systems", count: 18 },
-    { id: "Solar Accessories", label: "Solar Accessories", count: 56 },
-    { id: "Off-Grid Kits", label: "Off-Grid Kits", count: 12 },
-    { id: "Solar Water Heaters", label: "Solar Water Heaters", count: 9 },
-    { id: "Solar Lighting", label: "Solar Lighting", count: 31 },
-    { id: "Commercial Solutions", label: "Commercial Solutions", count: 17 },
-    { id: "Residential Solutions", label: "Residential Solutions", count: 24 },
-  ]
-
   // Sort options
   const sortOptions = [
     { id: "price-asc", label: "Price: Low to High" },
@@ -257,7 +302,7 @@ export default function SolarProductsPage() {
         className="relative h-[50vh] md:h-[60vh] bg-cover bg-center flex items-center justify-center"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(/placeholder.svg?height=1080&width=1920)",
+            "linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6))",
           backgroundAttachment: "fixed",
         }}
       >
@@ -278,7 +323,7 @@ export default function SolarProductsPage() {
 
         <div className="container mx-auto px-4 relative z-10 text-center">
           <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-            <Badge className="mb-4 bg-green-900/30 text-green-400 border-green-500/30 py-1.5 px-4">
+            <Badge className="mt-10 bg-green-900/30 text-green-400 border-green-500/30 py-1.5 px-4">
               Solar Solutions
             </Badge>
             <h1 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-500 via-teal-500 to-blue-500 mb-6">
@@ -300,7 +345,7 @@ export default function SolarProductsPage() {
               >
                 Browse Products <ChevronRight className="ml-2 h-5 w-5" />
               </Button>
-              <Button size="lg" variant="outline" className="border-green-500 text-green-400 hover:bg-green-500/10">
+              <Button size="lg"  className="bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700">
                 Solar Calculator
               </Button>
             </div>
@@ -309,6 +354,18 @@ export default function SolarProductsPage() {
 
         {/* Animated sun rays */}
         <div className="absolute inset-0 overflow-hidden">
+          {/* Solar pattern overlay */}
+          <div className="absolute inset-0 opacity-20">
+            <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+              <pattern id="solar-pattern-sun" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+                <rect x="5" y="5" width="40" height="40" fill="none" stroke="#10b981" strokeWidth="1" />
+                <rect x="55" y="5" width="40" height="40" fill="none" stroke="#10b981" strokeWidth="1" />
+                <rect x="5" y="55" width="40" height="40" fill="none" stroke="#10b981" strokeWidth="1" />
+                <rect x="55" y="55" width="40" height="40" fill="none" stroke="#10b981" strokeWidth="1" />
+              </pattern>
+              <rect width="100%" height="100%" fill="url(#solar-pattern-sun)" />
+            </svg>
+          </div>
           <motion.div
             className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-yellow-500/20 blur-3xl"
             animate={{
@@ -325,7 +382,19 @@ export default function SolarProductsPage() {
       </div>
 
       {/* Solar Stats Section */}
-      <section ref={statsRef} className="py-12 bg-gradient-to-b from-background via-gray-900/30 to-background">
+      <section ref={statsRef} className="relative py-12 bg-gradient-to-b from-background via-gray-900/30 to-background">
+        {/* Solar pattern overlay */}
+        <div className="absolute inset-0 opacity-20">
+          <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <pattern id="solar-pattern-stats" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+              <rect x="5" y="5" width="40" height="40" fill="none" stroke="#10b981" strokeWidth="1" />
+              <rect x="55" y="5" width="40" height="40" fill="none" stroke="#10b981" strokeWidth="1" />
+              <rect x="5" y="55" width="40" height="40" fill="none" stroke="#10b981" strokeWidth="1" />
+              <rect x="55" y="55" width="40" height="40" fill="none" stroke="#10b981" strokeWidth="1" />
+            </pattern>
+            <rect width="100%" height="100%" fill="url(#solar-pattern-stats)" />
+          </svg>
+        </div>
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {solarStats.map((stat, index) => (
@@ -334,11 +403,11 @@ export default function SolarProductsPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.2 }}
-                className="bg-gradient-to-br from-gray-900/50 to-gray-800/50 border border-gray-800 rounded-xl p-6 text-center"
+                className="bg-gradient-to-r from-green-600 to-teal-600 border border-gray-800 rounded-xl p-6 text-center"
               >
                 <div className="flex justify-center mb-4">
                   <div className="w-16 h-16 rounded-full bg-green-900/30 flex items-center justify-center">
-                    <stat.icon className="h-8 w-8 text-green-400" />
+                    <stat.icon className="h-8 w-8 text-white" />
                   </div>
                 </div>
                 <h3 className="text-4xl font-bold text-white mb-2">
@@ -347,8 +416,8 @@ export default function SolarProductsPage() {
                   </span>
                   <span className="text-green-400">{stat.value.includes("+") ? "+" : ""}</span>
                 </h3>
-                <p className="text-gray-400 mb-1">{stat.label}</p>
-                <p className="text-sm text-green-400">{stat.unit}</p>
+                <p className="text-black mb-1">{stat.label}</p>
+                <p className="text-sm text-black">{stat.unit}</p>
               </motion.div>
             ))}
           </div>
@@ -356,7 +425,19 @@ export default function SolarProductsPage() {
       </section>
 
       {/* Featured Products Section */}
-      <section className="py-16 bg-gradient-to-b from-background via-gray-900/30 to-background">
+      <section className="relative py-16 bg-gradient-to-b from-background via-gray-900/30 to-background">
+        {/* Solar pattern overlay */}
+        <div className="absolute inset-0 opacity-20">
+          <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <pattern id="solar-pattern-featured" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+              <rect x="5" y="5" width="40" height="40" fill="none" stroke="#10b981" strokeWidth="1" />
+              <rect x="55" y="5" width="40" height="40" fill="none" stroke="#10b981" strokeWidth="1" />
+              <rect x="5" y="55" width="40" height="40" fill="none" stroke="#10b981" strokeWidth="1" />
+              <rect x="55" y="55" width="40" height="40" fill="none" stroke="#10b981" strokeWidth="1" />
+            </pattern>
+            <rect width="100%" height="100%" fill="url(#solar-pattern-featured)" />
+          </svg>
+        </div>
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -533,7 +614,19 @@ export default function SolarProductsPage() {
       </section>
 
       {/* Main Products Section */}
-      <section id="products-section" className="py-16">
+      <section id="products-section" className="relative py-16 bg-gradient-to-b from-background via-gray-900/30 to-background">
+        {/* Solar pattern overlay */}
+        <div className="absolute inset-0 opacity-20">
+          <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <pattern id="solar-pattern-grid" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+              <rect x="5" y="5" width="40" height="40" fill="none" stroke="#10b981" strokeWidth="1" />
+              <rect x="55" y="5" width="40" height="40" fill="none" stroke="#10b981" strokeWidth="1" />
+              <rect x="5" y="55" width="40" height="40" fill="none" stroke="#10b981" strokeWidth="1" />
+              <rect x="55" y="55" width="40" height="40" fill="none" stroke="#10b981" strokeWidth="1" />
+            </pattern>
+            <rect width="100%" height="100%" fill="url(#solar-pattern-grid)" />
+          </svg>
+        </div>
         <div className="container mx-auto px-4">
           {/* Page Header */}
           <div className="mb-12">
@@ -541,7 +634,7 @@ export default function SolarProductsPage() {
               <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-500 to-blue-600 mb-4">
                 Solar Products
               </h2>
-              <p className="text-gray-300 max-w-3xl">
+              <p className="text-black dark:text-white max-w-3xl">
                 Browse our complete collection of solar panels, inverters, batteries, and accessories for your renewable
                 energy needs
               </p>
@@ -555,7 +648,7 @@ export default function SolarProductsPage() {
                 <div className="absolute inset-0 overflow-hidden">
                   <div className="h-full w-full bg-gradient-to-r from-green-900/20 via-teal-900/20 to-blue-900/20 blur-3xl"></div>
                 </div>
-                <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-6 bg-background/50 backdrop-blur-sm border border-gray-800 rounded-lg p-1">
+                <TabsList className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 bg-background/50 backdrop-blur-sm border border-gray-800 rounded-lg overflow-x-auto">
                   <TabsTrigger
                     value="all"
                     onClick={() => setSelectedCategories([])}
@@ -739,7 +832,7 @@ export default function SolarProductsPage() {
             {/* Mobile Filters */}
             <div className="flex md:hidden gap-2">
               {/* Mobile Category Filter */}
-              <DropdownMenu>
+              <DropdownMenu open={filterMenuOpen} onOpenChange={setFilterMenuOpen}>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="flex-1 border-gray-700 bg-background/50 backdrop-blur-sm">
                     <Filter className="h-4 w-4 mr-2" />
@@ -802,11 +895,17 @@ export default function SolarProductsPage() {
                         onClick={() => {
                           clearFilters()
                           setActiveTab("all")
+                          setFilterMenuOpen(false)
                         }}
                       >
                         Clear All
                       </Button>
-                      <Button className="bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700">
+                      <Button 
+                        className="bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700"
+                        onClick={() => {
+                          setFilterMenuOpen(false)
+                        }}
+                      >
                         Apply Filters
                       </Button>
                     </div>
@@ -865,7 +964,7 @@ export default function SolarProductsPage() {
           </AnimatePresence>
 
           {/* Products Grid */}
-          <div className="mt-8">
+          <div className=" relative mt-8">
             <Tabs value={activeTab} defaultValue="all">
               <TabsList className="hidden">
                 <TabsTrigger value="all">All Products</TabsTrigger>
@@ -899,14 +998,14 @@ export default function SolarProductsPage() {
             <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500 mb-6">
               Solar Solutions For Every Need
             </h2>
-            <p className="text-gray-300 max-w-3xl mx-auto">
+            <p className="text-black dark:text-white max-w-3xl mx-auto">
               Our solar products are designed for a wide range of applications, from residential homes to commercial
               buildings
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Card className="bg-gradient-to-br from-gray-900/50 to-gray-800/50 border-gray-800 overflow-hidden group hover:border-gray-700 transition-all duration-300">
+            <Card className="bg-black overflow-hidden group hover:border-gray-700 transition-all duration-300">
               <div className="h-2 bg-gradient-to-r from-green-500 to-teal-500"></div>
               <CardContent className="p-6">
                 <div className="mb-4 w-12 h-12 rounded-full bg-green-900/30 flex items-center justify-center">
@@ -924,7 +1023,7 @@ export default function SolarProductsPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-br from-gray-900/50 to-gray-800/50 border-gray-800 overflow-hidden group hover:border-gray-700 transition-all duration-300">
+            <Card className="bg-black overflow-hidden group hover:border-gray-700 transition-all duration-300">
               <div className="h-2 bg-gradient-to-r from-blue-500 to-teal-500"></div>
               <CardContent className="p-6">
                 <div className="mb-4 w-12 h-12 rounded-full bg-blue-900/30 flex items-center justify-center">
@@ -942,7 +1041,7 @@ export default function SolarProductsPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-br from-gray-900/50 to-gray-800/50 border-gray-800 overflow-hidden group hover:border-gray-700 transition-all duration-300">
+            <Card className="bg-black overflow-hidden group hover:border-gray-700 transition-all duration-300">
               <div className="h-2 bg-gradient-to-r from-teal-500 to-cyan-500"></div>
               <CardContent className="p-6">
                 <div className="mb-4 w-12 h-12 rounded-full bg-teal-900/30 flex items-center justify-center">
@@ -992,12 +1091,10 @@ export default function SolarProductsPage() {
                     Input your location, energy usage, and preferences to get a personalized report.
                   </p>
                   <div className="flex flex-wrap gap-4">
-                    <Button size="lg" className="bg-white text-green-900 hover:bg-gray-100">
+                    <Button size="lg" className="bg-gradient-to-r   from-green-900/90 to-blue-900/90 text-white hover:bg-white cursor-pointer">
                       Start Calculation <ChevronRight className="ml-2 h-5 w-5" />
                     </Button>
-                    <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-                      Learn More
-                    </Button>
+                    
                   </div>
                 </div>
                 <div className="relative h-64 md:h-80">

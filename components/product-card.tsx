@@ -15,6 +15,7 @@ interface ProductCardProps {
   description?: string
   image: string
   category: string
+  section?: "arduino" | "solar" | "electronics" | "sound"  // Add section prop
   index: number
   quantity: number
   price: number
@@ -26,6 +27,7 @@ export default function ProductCard({
   description,
   image,
   category,
+  section = "arduino", // Default to arduino since we're in arduino section
   index,
   quantity,
   price,
@@ -33,8 +35,8 @@ export default function ProductCard({
 }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false)
 
-  const getCategoryColor = (category: string) => {
-    switch (category) {
+  const getCategoryColor = (section: string) => {
+    switch (section) {
       case "electronics":
         return "bg-blue-500/10 text-blue-500 border-blue-500/20"
       case "solar":
@@ -74,8 +76,8 @@ export default function ProductCard({
             className={cn("object-contain transition-transform duration-500", isHovered ? "scale-105" : "scale-100")}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-60"></div>
-          <Badge className={cn("absolute top-3 left-3 border", getCategoryColor(category))}>
-            {category.charAt(0).toUpperCase() + category.slice(1)}
+          <Badge className={cn("absolute top-3 left-3 border", getCategoryColor(section))}>
+            {category}
           </Badge>
         </div>
         <CardContent className="p-5 flex flex-col flex-grow">

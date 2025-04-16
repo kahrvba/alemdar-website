@@ -149,10 +149,10 @@ export default function ProductCategories() {
   const navigateToCategory = (categoryId: string) => {
     // Map the category ID to the corresponding route
     const categoryRoutes: Record<string, string> = {
-      "arduino": "/products/arduino",
-      "solar": "/products/Solar",
-      "electronics": "/products/electronics",
-      "sound": "/products/SoundSystem"
+      "arduino": "/products/categories/arduino",
+      "solar": "/products/categories/Solar",
+      "electronics": "/products/categories/electronics",
+      "sound": "/products/categories/SoundSystem"
     }
 
     const route = categoryRoutes[categoryId.toLowerCase()]
