@@ -19,7 +19,6 @@ import Electronics from "@/components/elecrtocisfetchedProducts"
 import Arduino from "@/components/arduinofetchedProducts"
 import SoundProducts from "@/components/soundfetchedProducts"
 import { useRouter } from "next/navigation"
-import ReactCookieBot from 'react-cookiebot'
 // Register plugins
 gsap.registerPlugin(ScrollTrigger)
 
@@ -499,10 +498,6 @@ export default function Home() {
       </section>
 
       <Footer contactRef={contactRef as React.RefObject<HTMLElement>} />
-      <ReactCookieBot 
-        domainGroupId="b58a7fb8-d07c-4ab0-a582-fb0625ebd864"
-        language="en"
-      />
     </div>
   )
 }
