@@ -58,7 +58,7 @@ const solarStats = [
 export default function SolarProductsPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
-  const [sortOption, setSortOption] = useState("price-asc")
+  const [sortOption, setSortOption] = useState("price-desc")
   const [activeFilters, setActiveFilters] = useState(0)
   const [,setIsLoading] = useState(true)
   const [activeTab, setActiveTab] = useState("all")
@@ -250,10 +250,10 @@ export default function SolarProductsPage() {
     }
   }, [isMounted])
 
-  // Sort options
+  // Sort options - reorder to show high to low first
   const sortOptions = [
-    { id: "price-asc", label: "Price: Low to High" },
     { id: "price-desc", label: "Price: High to Low" },
+    { id: "price-asc", label: "Price: Low to High" },
     { id: "name-asc", label: "Name: A to Z" },
     { id: "name-desc", label: "Name: Z to A" },
     { id: "efficiency", label: "Highest Efficiency" },
@@ -272,14 +272,14 @@ export default function SolarProductsPage() {
   const clearFilters = () => {
     setSearchQuery("")
     setSelectedCategories([])
-    setSortOption("price-asc")
+    setSortOption("price-desc")
   }
 
   useEffect(() => {
     let count = 0
     if (searchQuery) count++
     if (selectedCategories.length > 0) count++
-    if (sortOption !== "price-asc") count++
+    if (sortOption !== "price-desc") count++
     setActiveFilters(count)
   }, [searchQuery, selectedCategories, sortOption])
 
@@ -951,10 +951,10 @@ export default function SolarProductsPage() {
                   </Badge>
                 ))}
 
-                {sortOption !== "price-asc" && (
+                {sortOption !== "price-desc" && (
                   <Badge variant="outline" className="bg-background/50 border-gray-700 flex items-center gap-1">
                     {getCurrentSortLabel()}
-                    <button onClick={() => setSortOption("price-asc")}>
+                    <button onClick={() => setSortOption("price-desc")}>
                       <X className="h-3 w-3 ml-1" />
                     </button>
                   </Badge>

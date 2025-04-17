@@ -6,6 +6,7 @@ import ConsoleLogger from "@/components/ConsoleLogger";
 import ErrorBoundary from '@/components/ErrorBoundary';
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/react"
+import SystemCheck from "@/components/SystemCheck";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -46,9 +47,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+          <noscript>
+            <meta httpEquiv="refresh" content="0;url=/unsupported.html" />
+          </noscript>
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ErrorBoundary>
           <ConsoleLogger />
+          <SystemCheck />
           <Provider>
             {children}
           </Provider>
