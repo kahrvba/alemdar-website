@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "alemdar-website",
   "version": "0.1.0",
   "private": true,
@@ -41,6 +42,7 @@
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
     "react-parallax-tilt": "^1.7.287",
+    "resend": "^4.3.0",
     "tailwind-merge": "^3.0.2",
     "tailwindcss-animate": "^1.0.7",
     "three": "^0.175.0",

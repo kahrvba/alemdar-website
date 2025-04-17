@@ -9,14 +9,14 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { cn } from "@/lib/utils"
 import ThemeSwitch from "@/components/ThemeSwitch"
-
+import { useRouter } from 'next/navigation'
 interface NavbarProps {
   activeSection: string
 }
 
 export default function Navbar({ activeSection }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false)
-
+  const router = useRouter();
   useEffect(() => {
     if (typeof window === "undefined") return
 
@@ -83,6 +83,7 @@ export default function Navbar({ activeSection }: NavbarProps) {
           <Button 
             variant="default"
             className="hidden md:flex bg-gray-900 text-white hover:bg-gray-800 dark:bg-primary dark:text-primary-foreground dark:hover:bg-primary/90"
+            onClick={() => router.push("#contact")}
           >
             Contact Us
           </Button>

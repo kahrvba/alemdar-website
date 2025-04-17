@@ -28,13 +28,13 @@ export default function Footer({ contactRef }: { contactRef?: React.RefObject<HT
               and expert services.
             </p>
             <div className="flex space-x-4">
-              <Link href="#" className="text-black dark:text-white hover:text-blue-400 transition-colors">
+              <Link href="https://www.facebook.com/share/157A81DV44/" className="text-black dark:text-white hover:text-blue-400 transition-colors">
                 <Facebook className="h-5 w-5" />
               </Link>
               <Link href="#" className="text-black dark:text-white hover:text-blue-400 transition-colors">
                 <Twitter className="h-5 w-5" />
               </Link>
-              <Link href="#" className="text-black dark:text-white hover:text-blue-400 transition-colors">
+              <Link href="https://www.instagram.com/alemdarteknik?igsh=bW5lY2lla3c0dDhz" className="text-black dark:text-white hover:text-blue-400 transition-colors">
                 <Instagram className="h-5 w-5" />
               </Link>
               <Link href="#" className="text-black dark:text-white hover:text-blue-400 transition-colors">
@@ -47,47 +47,43 @@ export default function Footer({ contactRef }: { contactRef?: React.RefObject<HT
             <h3 className="font-bold text-lg mb-6 text-black dark:text-white">Quick Links</h3>
             <ul className="space-y-4">
               <li>
-                <Link href="#" className="text-black dark:text-white hover:text-blue-400 transition-colors">
+                <Link href="#contact" className="text-black dark:text-white hover:text-blue-400 transition-colors">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-black dark:text-white hover:text-blue-400 transition-colors">
+                <Link href="/products/categories" className="text-black dark:text-white hover:text-blue-400 transition-colors">
                   Products
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-black dark:text-white hover:text-blue-400 transition-colors">
+                <Link href="#innovation" className="text-black dark:text-white hover:text-blue-400 transition-colors">
                   Innovation Lab
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-black dark:text-white hover:text-blue-400 transition-colors">
+                <Link href="#services" className="text-black dark:text-white hover:text-blue-400 transition-colors">
                   Services
                 </Link>
               </li>
-              <li>
-                <Link href="#" className="text-black dark:text-white hover:text-blue-400 transition-colors">
-                  Blog
-                </Link>
-              </li>
+              
             </ul>
           </div>
 
-          <div>
+          <div className="">
             <h3 className="font-bold text-lg mb-6 text-black dark:text-white">Contact</h3>
             <ul className="space-y-4">
               <li className="flex items-start">
                 <MapPin className="h-5 w-5 text-blue-400 mr-3 mt-0.5" />
-                <span className="text-black dark:text-white">123 Tech Avenue, Innovation District, CA 94103</span>
+                <span className="text-black dark:text-white">Polis Sokak No:4 Lefkoş</span>
               </li>
               <li className="flex items-center">
                 <Phone className="h-5 w-5 text-blue-400 mr-3" />
-                <span className="text-black dark:text-white">+90 (542) 8772005</span>
+                <a className="text-black dark:text-white hover:text-blue-400" href="tel:+90 (542) 8772005">+90 (542) 8772005</a>
               </li>
-              <li className="flex items-center">
-                <Mail className="h-5 w-5 text-blue-400 mr-3" />
-                <span className="text-black dark:text-white">info@alemdarTeknik.com</span>
+              <li className="flex items-center gap-3 w-full">
+                <Mail className="h-5 w-5 text-blue-400 flex-shrink-0" />
+                <span className="text-black dark:text-white break-normal">Alemdar-elektronik@Live.com</span>
               </li>
             </ul>
           </div>
@@ -113,7 +109,7 @@ export default function Footer({ contactRef }: { contactRef?: React.RefObject<HT
         <Separator className="my-8 bg-gray-800" />
 
         <div className="flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-500 text-sm">&copy; {new Date().getFullYear()} ALEMDAR TEKNIK. All rights reserved.</p>
+          <p className="text-gray-500 text-sm cursor-pointer hover:text-blue-400 transition-colors" onClick={() => window.open('https://github.com/kahrvba', '_blank')}>&copy; {new Date().getFullYear()} Kahrba. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link href="#" className="text-gray-500 hover:text-black dark:text-white text-sm">
               Privacy Policy
