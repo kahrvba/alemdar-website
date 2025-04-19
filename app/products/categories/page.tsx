@@ -333,7 +333,23 @@ export default function ProductCategories() {
             animate={{ y: [0, 10, 0] }}
             transition={{ repeat: Infinity, duration: 1.5 }}
           >
-            <ChevronRight className="h-8 w-8 rotate-90 text-purple-500 opacity-70" />
+            <ChevronRight className="h-8 w-8 rotate-90 text-purple-500 opacity-70 cursor-pointer" 
+              onClick={() => {
+                const categoriesSection = document.getElementById('categories-section');
+                  if (categoriesSection) {
+                    categoriesSection.scrollIntoView({ behavior: 'smooth' });
+                    setTimeout(() => {
+                    toast.info("Scroll Down", {
+                    description: "Scroll down to discover more categories",
+                    duration: 2000,
+                    className: "bg-purple-900/80 text-white border-purple-500",
+                  });
+                }, 1000);
+              }
+            }
+          }
+            
+            />
           </motion.div>
           <span className="text-sm text-gray-700 cursor-pointer hover:text-purple-500 transition-colors dark:text-white dark:hover:text-purple-500"
                 onClick={() => {

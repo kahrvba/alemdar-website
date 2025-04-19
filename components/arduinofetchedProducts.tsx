@@ -181,7 +181,7 @@ export default function Arduino({ preview = false, categoryFilter = '', sortOpti
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
       {preview
-        ? [1, 2, 3].map((selectedId, index) => {
+        ? [340, 215, 214].map((selectedId, index) => {
             const product = arduinoProducts?.find(p => p.id === selectedId);
             if (!product) return null;
 

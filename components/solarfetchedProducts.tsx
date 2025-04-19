@@ -178,7 +178,7 @@ export default function SolarProducts({
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
       {preview
-        ? [1, 2, 3].map((selectedId, index) => {
+        ? [1, 23, 45].map((selectedId, index) => {
             const product = solarProducts?.find(p => p.id === selectedId);
             if (!product) return null;
 
