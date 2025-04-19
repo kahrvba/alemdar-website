@@ -291,6 +291,7 @@ export default function SolarProductsPage() {
 
   return (
     <div className="min-h-screen bg-background overflow-hidden">
+      
       {/* Navigation */}
       <div className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md">
         <Navbar activeSection="products" />
@@ -335,7 +336,7 @@ export default function SolarProductsPage() {
             <div className="flex flex-wrap justify-center gap-4">
               <Button
                 size="lg"
-                className="bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700"
+                className="bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 cursor-pointer"
                 onClick={() => {
                   const productsSection = document.getElementById("products-section")
                   if (productsSection) {
@@ -345,7 +346,7 @@ export default function SolarProductsPage() {
               >
                 Browse Products <ChevronRight className="ml-2 h-5 w-5" />
               </Button>
-              <Button size="lg"  className="bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700">
+              <Button size="lg"  className="bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 cursor-pointer">
                 Solar Calculator
               </Button>
             </div>
@@ -381,255 +382,10 @@ export default function SolarProductsPage() {
         </div>
       </div>
 
-      {/* Solar Stats Section */}
-      <section ref={statsRef} className="relative py-12 bg-gradient-to-b from-background via-gray-900/30 to-background">
-        {/* Solar pattern overlay */}
-        <div className="absolute inset-0 opacity-20">
-          <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-            <pattern id="solar-pattern-stats" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
-              <rect x="5" y="5" width="40" height="40" fill="none" stroke="#10b981" strokeWidth="1" />
-              <rect x="55" y="5" width="40" height="40" fill="none" stroke="#10b981" strokeWidth="1" />
-              <rect x="5" y="55" width="40" height="40" fill="none" stroke="#10b981" strokeWidth="1" />
-              <rect x="55" y="55" width="40" height="40" fill="none" stroke="#10b981" strokeWidth="1" />
-            </pattern>
-            <rect width="100%" height="100%" fill="url(#solar-pattern-stats)" />
-          </svg>
-        </div>
+      {/* Products Section */}
+      <section id="products-section" className="py-16">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {solarStats.map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.2 }}
-                className="bg-gradient-to-r from-green-600 to-teal-600 border border-gray-800 rounded-xl p-6 text-center"
-              >
-                <div className="flex justify-center mb-4">
-                  <div className="w-16 h-16 rounded-full bg-green-900/30 flex items-center justify-center">
-                    <stat.icon className="h-8 w-8 text-white" />
-                  </div>
-                </div>
-                <h3 className="text-4xl font-bold text-white mb-2">
-                  <span className="stat-counter" data-target={stat.value.replace(/[^0-9]/g, "")}>
-                    0
-                  </span>
-                  <span className="text-green-400">{stat.value.includes("+") ? "+" : ""}</span>
-                </h3>
-                <p className="text-black mb-1">{stat.label}</p>
-                <p className="text-sm text-black">{stat.unit}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Products Section */}
-      <section className="relative py-16 bg-gradient-to-b from-background via-gray-900/30 to-background">
-        {/* Solar pattern overlay */}
-        <div className="absolute inset-0 opacity-20">
-          <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-            <pattern id="solar-pattern-featured" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
-              <rect x="5" y="5" width="40" height="40" fill="none" stroke="#10b981" strokeWidth="1" />
-              <rect x="55" y="5" width="40" height="40" fill="none" stroke="#10b981" strokeWidth="1" />
-              <rect x="5" y="55" width="40" height="40" fill="none" stroke="#10b981" strokeWidth="1" />
-              <rect x="55" y="55" width="40" height="40" fill="none" stroke="#10b981" strokeWidth="1" />
-            </pattern>
-            <rect width="100%" height="100%" fill="url(#solar-pattern-featured)" />
-          </svg>
-        </div>
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-12"
-          >
-            <Badge className="mb-4 bg-blue-900/30 text-blue-400 border-blue-500/30 py-1.5 px-4">
-              Featured Products
-            </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-600 mb-6">
-              Top-Rated Solar Solutions
-            </h2>
-            <p className="text-gray-300 max-w-3xl mx-auto">
-              Explore our best-selling solar products, designed for maximum efficiency and reliability
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {isProductsLoading ? (
-              // Loading state for featured products
-              [...Array(3)].map((_, index) => (
-                <motion.div
-                  key={`skeleton-${index}`}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="group"
-                >
-                  <Card className="overflow-hidden bg-gray-900/30 border border-gray-800 h-full">
-                    <div className="relative p-6">
-                      <div className="relative h-48 mb-6 flex items-center justify-center">
-                        <Skeleton className="h-full w-full rounded-lg" />
-                      </div>
-                      <Skeleton className="h-6 w-3/4 mb-2" />
-                      <Skeleton className="h-4 w-full mb-4" />
-                      <div className="grid grid-cols-2 gap-2 mb-4">
-                        <Skeleton className="h-4 w-full" />
-                        <Skeleton className="h-4 w-full" />
-                      </div>
-                      <Skeleton className="h-4 w-24 mb-4" />
-                      <div className="flex justify-between">
-                        <Skeleton className="h-6 w-20" />
-                        <Skeleton className="h-8 w-8 rounded-full" />
-                      </div>
-                    </div>
-                  </Card>
-                </motion.div>
-              ))
-            ) : productsError ? (
-              // Error state
-              <div className="col-span-3 py-12 text-center">
-                <div className="bg-red-900/20 border border-red-800 rounded-lg p-6 max-w-md mx-auto">
-                  <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-white mb-2">Unable to Load Featured Products</h3>
-                  <p className="text-gray-300 mb-6">We&apos;re having trouble loading our featured products. Please try again later.</p>
-                </div>
-              </div>
-            ) : featuredProducts.length === 0 ? (
-              // No products state
-              <div className="col-span-3 py-12 text-center">
-                <div className="bg-gray-900/50 border border-gray-800 rounded-lg p-6 max-w-md mx-auto">
-                  <PackageSearch className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-white mb-2">No Featured Products</h3>
-                  <p className="text-gray-300 mb-6">Check back soon for our featured solar products.</p>
-                </div>
-              </div>
-            ) : (
-              // Normal state with products
-              featuredProducts.map((product, index) => (
-                <motion.div
-                  key={product.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="group"
-                >
-
-                <Card className="overflow-hidden bg-gray-900/30 border border-gray-800 group-hover:border-gray-700 transition-all duration-300 h-full">
-                  {/* Glow effect on hover */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-blue-600 opacity-0 group-hover:opacity-10 transition-opacity duration-500 blur-xl"></div>
-
-                  <div className="relative p-6">
-                    {/* Stock badge */}
-                    <Badge
-                      className={`absolute top-4 right-4 z-10 ${product.stock === "Low Stock" ? "bg-amber-600/90 text-white" : "bg-green-600/90 text-white"} border-none`}
-                    >
-                      {product.stock}
-                    </Badge>
-
-                    <div className="relative h-48 mb-6 flex items-center justify-center">
-                      <div className="absolute inset-0 bg-gradient-to-b from-green-900/10 to-blue-900/10 rounded-lg"></div>
-                      <Image
-                        src={product.image || "/placeholder.svg"}
-                        alt={product.name}
-                        width={150}
-                        height={150}
-                        className="object-contain transition-transform duration-500 group-hover:scale-110"
-                      />
-                    </div>
-
-                    <div>
-                      <div className="flex items-center mb-2">
-                        <Badge className="bg-green-900/30 text-green-400 border-green-500/30">{product.category}</Badge>
-                        {product.featured && (
-                          <Badge className="ml-2 bg-amber-900/30 text-amber-400 border-amber-500/30">
-                            <Star className="h-3 w-3 mr-1 fill-amber-400" /> Featured
-                          </Badge>
-                        )}
-                      </div>
-
-                      <h3 className="text-xl font-bold text-white mb-2">{product.name}</h3>
-                      <p className="text-gray-400 mb-4 line-clamp-2">{product.description}</p>
-
-                      {/* Product specs */}
-                      <div className="grid grid-cols-2 gap-2 mb-4">
-                        {product.powerOutput && (
-                          <div className="flex items-center text-sm">
-                            <Zap className="h-3.5 w-3.5 mr-1 text-green-400" />
-                            <span className="text-gray-300">{product.powerOutput}</span>
-                          </div>
-                        )}
-                        {product.efficiency && (
-                          <div className="flex items-center text-sm">
-                            <BarChart className="h-3.5 w-3.5 mr-1 text-green-400" />
-                            <span className="text-gray-300">Efficiency: {product.efficiency}</span>
-                          </div>
-                        )}
-                        {product.capacity && (
-                          <div className="flex items-center text-sm">
-                            <Battery className="h-3.5 w-3.5 mr-1 text-green-400" />
-                            <span className="text-gray-300">Capacity: {product.capacity}</span>
-                          </div>
-                        )}
-                        {product.cycles && (
-                          <div className="flex items-center text-sm">
-                            <Sun className="h-3.5 w-3.5 mr-1 text-green-400" />
-                            <span className="text-gray-300">Cycles: {product.cycles}</span>
-                          </div>
-                        )}
-                      </div>
-
-                      <div className="flex items-center mb-4">
-                        <div className="flex">
-                          {[...Array(5)].map((_, i) => (
-                            <Star
-                              key={i}
-                              className={`h-4 w-4 ${i < Math.floor(product.rating) ? "text-yellow-400 fill-yellow-400" : "text-gray-500"}`}
-                            />
-                          ))}
-                        </div>
-                        <span className="ml-2 text-gray-400 text-sm">({product.reviews})</span>
-                      </div>
-
-                      <div className="flex justify-between items-center">
-                        <span className="text-2xl font-bold text-green-400">${product.price.toFixed(2)}</span>
-                        <div className="flex space-x-2">
-                          <Button size="icon" variant="outline" className="rounded-full h-9 w-9 border-gray-700">
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                          <Button size="icon" className="rounded-full h-9 w-9 bg-green-600 hover:bg-green-700">
-                            <ShoppingCart className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </Card>
-              </motion.div>
-              ))
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* Main Products Section */}
-      <section id="products-section" className="relative py-16 bg-gradient-to-b from-background via-gray-900/30 to-background">
-        {/* Solar pattern overlay */}
-        <div className="absolute inset-0 opacity-20">
-          <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-            <pattern id="solar-pattern-grid" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
-              <rect x="5" y="5" width="40" height="40" fill="none" stroke="#10b981" strokeWidth="1" />
-              <rect x="55" y="5" width="40" height="40" fill="none" stroke="#10b981" strokeWidth="1" />
-              <rect x="5" y="55" width="40" height="40" fill="none" stroke="#10b981" strokeWidth="1" />
-              <rect x="55" y="55" width="40" height="40" fill="none" stroke="#10b981" strokeWidth="1" />
-            </pattern>
-            <rect width="100%" height="100%" fill="url(#solar-pattern-grid)" />
-          </svg>
-        </div>
-        <div className="container mx-auto px-4">
-          {/* Page Header */}
-          <div className="mb-12">
+          <div className="flex flex-col md:flex-row justify-between items-start mb-8">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
               <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-500 to-blue-600 mb-4">
                 Solar Products
@@ -985,8 +741,198 @@ export default function SolarProductsPage() {
         </div>
       </section>
 
-      {/* Applications Section */}
-      <section className="py-16 bg-gradient-to-b from-background via-gray-900/30 to-background">
+      {/* Stats Section */}
+      <section ref={statsRef} className="py-16 bg-gradient-to-b from-background to-background/80">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          >
+            {solarStats.map((stat) => (
+              <div key={stat.label} className="p-6 rounded-lg bg-black ">
+                <stat.icon className="w-8 h-8 text-green-400 mb-4" />
+                <h3 className="text-2xl font-bold text-white">{stat.value}</h3>
+                <p className="text-white">{stat.label}</p>
+                <p className="text-sm text-white">{stat.unit}</p>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Top Rated Solutions */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-500 to-blue-600 mb-8">
+              Top Rated Solar Solutions
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {isProductsLoading ? (
+                // Loading state for featured products
+                [...Array(3)].map((_, index) => (
+                  <motion.div
+                    key={`skeleton-${index}`}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    className="group"
+                  >
+                    <Card className="overflow-hidden bg-gray-900/30 border border-gray-800 h-full">
+                      <div className="relative p-6">
+                        <div className="relative h-48 mb-6 flex items-center justify-center">
+                          <Skeleton className="h-full w-full rounded-lg" />
+                        </div>
+                        <Skeleton className="h-6 w-3/4 mb-2" />
+                        <Skeleton className="h-4 w-full mb-4" />
+                        <div className="grid grid-cols-2 gap-2 mb-4">
+                          <Skeleton className="h-4 w-full" />
+                          <Skeleton className="h-4 w-full" />
+                        </div>
+                        <Skeleton className="h-4 w-24 mb-4" />
+                        <div className="flex justify-between">
+                          <Skeleton className="h-6 w-20" />
+                          <Skeleton className="h-8 w-8 rounded-full" />
+                        </div>
+                      </div>
+                    </Card>
+                  </motion.div>
+                ))
+              ) : productsError ? (
+                // Error state
+                <div className="col-span-3 py-12 text-center">
+                  <div className="bg-red-900/20 border border-red-800 rounded-lg p-6 max-w-md mx-auto">
+                    <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+                    <h3 className="text-xl font-semibold text-white mb-2">Unable to Load Featured Products</h3>
+                    <p className="text-gray-300 mb-6">We&apos;re having trouble loading our featured products. Please try again later.</p>
+                  </div>
+                </div>
+              ) : featuredProducts.length === 0 ? (
+                // No products state
+                <div className="col-span-3 py-12 text-center">
+                  <div className="bg-black border border-gray-800 rounded-lg p-6 max-w-md mx-auto">
+                    <PackageSearch className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                    <h3 className="text-xl font-semibold text-white mb-2">No Featured Products</h3>
+                    <p className="text-gray-300 mb-6">Check back soon for our featured solar products.</p>
+                  </div>
+                </div>
+              ) : (
+                // Normal state with products
+                featuredProducts.map((product, index) => (
+                  <motion.div
+                    key={product.id}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    className="group"
+                  >
+
+                  <Card className="overflow-hidden bg-gray-900/30 border border-gray-800 group-hover:border-gray-700 transition-all duration-300 h-full">
+                    {/* Glow effect on hover */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-blue-600 opacity-0 group-hover:opacity-10 transition-opacity duration-500 blur-xl"></div>
+
+                    <div className="relative p-6">
+                      {/* Stock badge */}
+                      <Badge
+                        className={`absolute top-4 right-4 z-10 ${product.stock === "Low Stock" ? "bg-amber-600/90 text-white" : "bg-green-600/90 text-white"} border-none`}
+                      >
+                        {product.stock}
+                      </Badge>
+
+                      <div className="relative h-48 mb-6 flex items-center justify-center">
+                        <div className="absolute inset-0 bg-gradient-to-b from-green-900/10 to-blue-900/10 rounded-lg"></div>
+                        <Image
+                          src={product.image || "/placeholder.svg"}
+                          alt={product.name}
+                          width={150}
+                          height={150}
+                          className="object-contain transition-transform duration-500 group-hover:scale-110"
+                        />
+                      </div>
+
+                      <div>
+                        <div className="flex items-center mb-2">
+                          <Badge className="bg-green-900/30 text-green-400 border-green-500/30">{product.category}</Badge>
+                          {product.featured && (
+                            <Badge className="ml-2 bg-amber-900/30 text-amber-400 border-amber-500/30">
+                              <Star className="h-3 w-3 mr-1 fill-amber-400" /> Featured
+                            </Badge>
+                          )}
+                        </div>
+
+                        <h3 className="text-xl font-bold text-white mb-2">{product.name}</h3>
+                        <p className="text-gray-400 mb-4 line-clamp-2">{product.description}</p>
+
+                        {/* Product specs */}
+                        <div className="grid grid-cols-2 gap-2 mb-4">
+                          {product.powerOutput && (
+                            <div className="flex items-center text-sm">
+                              <Zap className="h-3.5 w-3.5 mr-1 text-green-400" />
+                              <span className="text-gray-300">{product.powerOutput}</span>
+                            </div>
+                          )}
+                          {product.efficiency && (
+                            <div className="flex items-center text-sm">
+                              <BarChart className="h-3.5 w-3.5 mr-1 text-green-400" />
+                              <span className="text-gray-300">Efficiency: {product.efficiency}</span>
+                            </div>
+                          )}
+                          {product.capacity && (
+                            <div className="flex items-center text-sm">
+                              <Battery className="h-3.5 w-3.5 mr-1 text-green-400" />
+                              <span className="text-gray-300">Capacity: {product.capacity}</span>
+                            </div>
+                          )}
+                          {product.cycles && (
+                            <div className="flex items-center text-sm">
+                              <Sun className="h-3.5 w-3.5 mr-1 text-green-400" />
+                              <span className="text-gray-300">Cycles: {product.cycles}</span>
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="flex items-center mb-4">
+                          <div className="flex">
+                            {[...Array(5)].map((_, i) => (
+                              <Star
+                                key={i}
+                                className={`h-4 w-4 ${i < Math.floor(product.rating) ? "text-yellow-400 fill-yellow-400" : "text-gray-500"}`}
+                              />
+                            ))}
+                          </div>
+                          <span className="ml-2 text-gray-400 text-sm">({product.reviews})</span>
+                        </div>
+
+                        <div className="flex justify-between items-center">
+                          <span className="text-2xl font-bold text-green-400">${product.price.toFixed(2)}</span>
+                          <div className="flex space-x-2">
+                            <Button size="icon" variant="outline" className="rounded-full h-9 w-9 border-gray-700">
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                            <Button size="icon" className="rounded-full h-9 w-9 bg-green-600 hover:bg-green-700">
+                              <ShoppingCart className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </Card>
+                </motion.div>
+                ))
+              )}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Categories Section */}
+      <section id="categories-section" className="py-16 bg-gradient-to-b from-background to-background/80">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

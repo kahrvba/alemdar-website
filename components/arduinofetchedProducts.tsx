@@ -147,7 +147,7 @@ export default function Arduino({ preview = false, categoryFilter = '', sortOpti
             </p>
             <Button
               onClick={() => window.location.href = '/products/categories/arduino'}
-              className="bg-blue-600 hover:bg-blue-700"
+              className="bg-blue-600 hover:bg-blue-700 cursor-pointer"
             >
               View All Products
             </Button>

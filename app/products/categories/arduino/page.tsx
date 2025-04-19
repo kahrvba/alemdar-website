@@ -169,7 +169,7 @@ export default function ArduinoProductsPage() {
               <h1 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500 mb-6 leading-tight">
                 Explore Arduino <br />Boards & Accessories
               </h1>
-              <p className="text-xl md:text-2xl mb-8 max-w-xl text-gray-300">
+              <p className="text-xl md:text-2xl mb-8 max-w-xl text-black dark:text-white">
                 Discover our complete range of Arduino boards, shields, sensors, and accessories for your next
                 project
               </p>
@@ -179,7 +179,7 @@ export default function ArduinoProductsPage() {
       </section>
 
       {/* Main Products Section */}
-      <section id="products-section" className="py-16">
+      <section id="products-section" className="">
         <div className="container mx-auto px-4">
           {/* Page Header */}
           <div className="mb-12">
@@ -195,7 +195,7 @@ export default function ArduinoProductsPage() {
               <h2 className="text-3xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600 mb-6">
                 Arduino Products
               </h2>
-              <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              <p className="text-xl text-black max-w-3xl mx-auto dark:text-white">
                 Browse our selection of Arduino boards, shields, sensors, and accessories for your next
                 project
               </p>
@@ -452,13 +452,13 @@ export default function ArduinoProductsPage() {
             <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-green-500 mb-6">
               Technical Resources
             </h2>
-            <p className="text-gray-300 max-w-3xl mx-auto">
+            <p className="text-black max-w-3xl mx-auto">
               Access tutorials, documentation, and project ideas to get the most out of your Arduino products
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Card className="bg-gradient-to-br from-gray-900/50 to-gray-800/50 border-gray-800 overflow-hidden group hover:border-gray-700 transition-all duration-300">
+            <Card className="bg-black overflow-hidden group hover:border-gray-700 transition-all duration-300">
               <div className="h-2 bg-gradient-to-r from-blue-500 to-purple-500"></div>
               <CardContent className="p-6">
                 <div className="mb-4 w-12 h-12 rounded-full bg-blue-900/30 flex items-center justify-center">
@@ -476,7 +476,7 @@ export default function ArduinoProductsPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-br from-gray-900/50 to-gray-800/50 border-gray-800 overflow-hidden group hover:border-gray-700 transition-all duration-300">
+            <Card className="bg-black border-gray-800 overflow-hidden group hover:border-gray-700 transition-all duration-300">
               <div className="h-2 bg-gradient-to-r from-purple-500 to-pink-500"></div>
               <CardContent className="p-6">
                 <div className="mb-4 w-12 h-12 rounded-full bg-purple-900/30 flex items-center justify-center">
@@ -498,7 +498,7 @@ export default function ArduinoProductsPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-br from-gray-900/50 to-gray-800/50 border-gray-800 overflow-hidden group hover:border-gray-700 transition-all duration-300">
+            <Card className="bg-black border-gray-800 overflow-hidden group hover:border-gray-700 transition-all duration-300">
               <div className="h-2 bg-gradient-to-r from-green-500 to-emerald-500"></div>
               <CardContent className="p-6">
                 <div className="mb-4 w-12 h-12 rounded-full bg-green-900/30 flex items-center justify-center">

@@ -1,9 +1,9 @@
+
 import ProductCard from "./product-card";
 import { Skeleton } from "./ui/skeleton";
 import { Button } from "./ui/button";
 import { AlertCircle, RefreshCw, PackageSearch, Clock } from "lucide-react";
 import useCachedFetch from "@/hooks/useCachedFetch";
-
 interface SolarProduct {
   id: number;
   name: string; // API returns 'name' instead of 'english_name'
@@ -45,7 +45,6 @@ export default function SolarProducts({
 
   // Extract products from the data structure
   const solarProducts = data?.products || [];
-
   // Filter products based on search query and category
   const filteredProducts = solarProducts.filter(product => {
     // Filter by search query
@@ -111,18 +110,15 @@ export default function SolarProducts({
   if (filteredProducts.length === 0 && !isLoading && searchQuery) {
     return (
       <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
-        <div className="bg-gray-900/50 border border-gray-800 rounded-lg p-6 max-w-md mx-auto">
+        <div className="bg-black border border-gray-800 rounded-lg p-6 max-w-md mx-auto">
           <PackageSearch className="h-12 w-12 text-gray-400 mx-auto mb-4" />
           <h3 className="text-xl font-semibold text-white mb-2">No Products Found</h3>
           <p className="text-gray-300 mb-6">We couldn&apos;t find any products matching your search criteria.</p>
           <Button
-            onClick={() => {
-              // This would typically clear filters in the parent component
-              // For now, just refetch all products
-              refetch();
-            }}
+            onClick={() => window.location.href = '/products/categories/Solar'}
+
             variant="outline"
-            className="border-gray-700 text-gray-300 hover:bg-gray-800"
+            className="border-gray-700 text-green-600 hover:bg-gray-800 cursor-pointer hover:bg-gray-200 hover:text-green-600"
           >
             Clear Filters
           </Button>
@@ -135,17 +131,14 @@ export default function SolarProducts({
   if (filteredProducts.length === 0 && !isLoading && categoryFilter && !searchQuery) {
     return (
       <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
-        <div className="bg-gray-900/50 border border-gray-800 rounded-lg p-6 max-w-md mx-auto">
+        <div className="bg-black border border-gray-800 rounded-lg p-6 max-w-md mx-auto">
           <Clock className="h-12 w-12 text-green-400 mx-auto mb-4" />
           <h3 className="text-xl font-semibold text-white mb-2">Coming Soon</h3>
           <p className="text-gray-300 mb-6">Products in this category will be available soon.</p>
           <Button
-            onClick={() => {
-              // This would typically clear filters in the parent component
-              refetch();
-            }}
-            variant="outline"
-            className="border-green-700 text-green-400 hover:bg-green-900/30"
+              onClick={() => window.location.href = '/products/categories/Solar'}
+              variant="outline"
+            className="border-green-700 text-green-400 hover:bg-gray-200 hover:text-green-400 cursor-pointer"
           >
             Browse All Products
           </Button>
