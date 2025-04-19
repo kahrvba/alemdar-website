@@ -146,7 +146,7 @@ export default function Arduino({ preview = false, categoryFilter = '', sortOpti
               Please try a different search term or browse our categories.
             </p>
             <Button
-              onClick={() => window.location.href = '/products/arduino'}
+              onClick={() => window.location.href = '/products/categories/arduino'}
               className="bg-blue-600 hover:bg-blue-700"
             >
               View All Products
@@ -166,7 +166,7 @@ export default function Arduino({ preview = false, categoryFilter = '', sortOpti
               will be available soon. Please check back later or browse our other categories.
             </p>
             <Button
-              onClick={() => window.location.href = '/products/arduino'}
+              onClick={() => window.location.href = '/products/categories/arduino'}
               className="bg-amber-600 hover:bg-amber-700"
             >
               Explore Other Categories

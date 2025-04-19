@@ -76,18 +76,18 @@ export default function Navbar({ activeSection }: NavbarProps) {
           <Button 
             variant="ghost" 
             size="icon" 
-            className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white bg-gray-100 dark:bg-transparent"
+            className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white bg-gray-100 dark:bg-transparent cursor-pointer"
           >
-            <ShoppingCart className="h-5 w-5" />
+            <ShoppingCart className="h-5 w-5 cursor-pointer" />
           </Button>
           <Button 
             variant="default"
-            className="hidden md:flex bg-gray-900 text-white hover:bg-gray-800 dark:bg-primary dark:text-primary-foreground dark:hover:bg-primary/90"
+            className="hidden md:flex bg-gray-900 text-white hover:bg-gray-800 dark:bg-primary dark:text-primary-foreground dark:hover:bg-primary/90 cursor-pointer"
             onClick={() => router.push("#contact")}
           >
             Contact Us
           </Button>
-          <div className="text-gray-900 dark:text-gray-300">
+          <div className="text-gray-900 dark:text-gray-300 cursor-pointer">
             <ThemeSwitch />
           </div>
         </div>
@@ -97,7 +97,7 @@ export default function Navbar({ activeSection }: NavbarProps) {
             <Button 
               variant="ghost" 
               size="icon" 
-              className="md:hidden text-gray-900 dark:text-white bg-gray-100 dark:bg-transparent"
+              className="md:hidden text-gray-900 dark:text-white bg-gray-100 dark:bg-transparent cursor-pointer"
             >
               <Menu className="h-6 w-6" />
               <span className="sr-only">Toggle menu</span>

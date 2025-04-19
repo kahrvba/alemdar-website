@@ -15,10 +15,10 @@ interface ProductCardProps {
   description?: string
   image: string
   category: string
-  section?: "arduino" | "solar" | "electronics" | "sound"  // Add section prop
+  section?: "arduino" | "solar" | "electronics" | "sound"
   index: number
   quantity: number
-  price: number
+  price: number | null
   alt?: string
 }
 
@@ -50,7 +50,8 @@ export default function ProductCard({
     }
   }
 
-  const formatPrice = (price: number | string) => {
+  const formatPrice = (price: number | string | null) => {
+    if (price === null || price === undefined) return '0.00';
     const numPrice = typeof price === 'string' ? parseFloat(price) : price;
     return isNaN(numPrice) ? '0.00' : numPrice.toFixed(2);
   }

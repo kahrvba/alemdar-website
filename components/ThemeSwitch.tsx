@@ -14,7 +14,7 @@ export default function ThemeSwitch(){
     }
 
     return (
-        <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+        <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")} className="cursor-pointer">
             {theme === "dark" ? <FiSun /> : <FiMoon />}
         </button>
     );

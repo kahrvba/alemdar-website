@@ -271,7 +271,7 @@ export default function Home() {
             </TabsContent>
 
             <TabsContent value="electronics" className="mt-0">
-              <Electronics />
+              <Electronics preview={true} />
             </TabsContent>
 
             <TabsContent value="arduino" className="mt-0">
@@ -279,7 +279,7 @@ export default function Home() {
             </TabsContent>
 
             <TabsContent value="sound" className="mt-0">
-              <SoundProducts />
+              <SoundProducts preview={true}/>
             </TabsContent>
           </Tabs>
 
@@ -472,7 +472,8 @@ export default function Home() {
                 </p>
                 <Button
                   size="lg"
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 cursor-pointer"
+                  onClick={() => router.push("#contact")}
                 >
                   Get in Touch
                 </Button>
