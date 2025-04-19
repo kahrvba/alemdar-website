@@ -11,8 +11,7 @@ import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
-
-
+import {toast} from 'sonner';
 
 // Category data
 const categories = [
@@ -200,6 +199,19 @@ export default function ProductCategories() {
       <section
         ref={heroRef}
         className="relative min-h-[80vh] flex items-center pt-24 pb-12 md:pt-32 md:pb-16 text-white"
+        onClick={() => {
+          const categoriesSection = document.getElementById('categories-section');
+          if (categoriesSection) {
+            categoriesSection.scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => {
+              toast.info("Scroll Down", {
+                description: "Scroll down to discover more categories",
+                duration: 2000,
+                className: "bg-purple-900/80 text-white border-purple-500",
+              });
+            }, 1000);
+          }
+        }}
       >
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(67,56,202,0.2),rgba(12,10,9,0))]"></div>
 
@@ -232,17 +244,15 @@ export default function ProductCategories() {
               <div className="flex flex-wrap gap-4">
                 <Button
                   size="lg"
-                  onClick={() => router.push("/products")}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white cursor-pointer"
+                  onClick={() => {
+                    const categoriesSection = document.getElementById('categories-section');
+                    if(categoriesSection){
+                      categoriesSection.scrollIntoView({behavior:'smooth'});
+                    }
+                  }}
                 >
                   Browse All Products <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-purple-500 text-purple-400 hover:bg-purple-500/10"
-                >
-                  Request Catalog
                 </Button>
               </div>
             </motion.div>
@@ -263,7 +273,8 @@ export default function ProductCategories() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                         transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
-                        className="relative overflow-hidden rounded-xl aspect-square"
+                        className="relative overflow-hidden rounded-xl aspect-square cursor-pointer"
+                        onClick={() => navigateToCategory(category.id)}
                       >
                         <div className="absolute inset-0 bg-gradient-to-br from-gray-900/80 to-black/80 z-10"></div>
                         <Image
@@ -329,7 +340,14 @@ export default function ProductCategories() {
           >
             <ChevronRight className="h-8 w-8 rotate-90 text-purple-500 opacity-70" />
           </motion.div>
-          <span className="text-sm text-gray-700">Scroll to explore</span>
+          <span className="text-sm text-gray-700 cursor-pointer hover:text-purple-500 transition-colors"
+                onClick={() => {
+                  const categoriesSection = document.getElementById('categories-section');
+                  if(categoriesSection){
+                    categoriesSection.scrollIntoView({behavior:'smooth'});
+                  }
+                }}
+          >Scroll to explore</span>
         </div>
       </section>
 
@@ -337,6 +355,7 @@ export default function ProductCategories() {
       <section
         ref={categoriesRef}
         className="py-20 md:py-28 relative text-gray-100"
+        id="categories-section"
       >
         <div className="absolute inset-0 bg-gradient-to-b from-background via-gray-400/50 to-background"></div>
 
@@ -370,7 +389,9 @@ export default function ProductCategories() {
                 variants={itemVariants}
                 className="relative group"
               >
-                <Card className="overflow-hidden bg-transparent border border-gray-800 group-hover:border-gray-700 transition-all duration-500 h-full w-full text-white">
+                <Card className="overflow-hidden bg-transparent border border-gray-800 group-hover:border-gray-700 transition-all duration-500 h-full w-full text-white cursor-pointer"
+                  onClick={() => navigateToCategory(category.id)}
+                >
                   {/* Glow effect on hover */}
                   <div className={`absolute inset-0 bg-gradient-to-r ${category.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500 blur-xl`}></div>
 

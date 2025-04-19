@@ -7,6 +7,7 @@ import ErrorBoundary from '@/components/ErrorBoundary';
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/react"
 import SystemCheck from "@/components/SystemCheck";
+import { Toaster } from "sonner";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -62,6 +63,7 @@ export default function RootLayout({
         </ErrorBoundary>
         <SpeedInsights />
         <Analytics />
+        <Toaster theme='dark' richColors= {true}/>
       </body>
     </html>
   );
