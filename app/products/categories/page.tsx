@@ -72,7 +72,7 @@ const categories = [
 // Featured testimonials
 const testimonials = [
   {
-    name: "Alex Johnson",
+    name: "Ahemd mohammed",
     role: "Tech Innovator",
     company: "Future Labs",
     text: "The quality of electronics from TechPower has transformed our prototyping process. Highly recommended!",
@@ -80,7 +80,7 @@ const testimonials = [
     category: "electronics"
   },
   {
-    name: "Sarah Chen",
+    name: "sara",
     role: "Sustainability Director",
     company: "EcoSolutions",
     text: "Their solar solutions are unmatched in efficiency and reliability. We've deployed them across multiple projects.",
@@ -335,7 +335,7 @@ export default function ProductCategories() {
           >
             <ChevronRight className="h-8 w-8 rotate-90 text-purple-500 opacity-70" />
           </motion.div>
-          <span className="text-sm text-gray-700 cursor-pointer hover:text-purple-500 transition-colors"
+          <span className="text-sm text-gray-700 cursor-pointer hover:text-purple-500 transition-colors dark:text-white dark:hover:text-purple-500"
                 onClick={() => {
                   const categoriesSection = document.getElementById('categories-section');
                     if (categoriesSection) {
@@ -558,17 +558,16 @@ export default function ProductCategories() {
                   <div className="flex flex-wrap gap-4">
                     <Button
                       size="lg"
-                      onClick={() => router.push("/products")}
+                      onClick={() => {
+                       const categoriesSection = document.getElementById('categories-section');
+                        if (categoriesSection) {
+                          categoriesSection.scrollIntoView({ behavior: 'smooth' }); 
+                        }
+                      }
+                    }
                       className="bg-white text-purple-900 hover:bg-gray-100"
                     >
                       View All Products <ArrowRight className="ml-2 h-5 w-5" />
-                    </Button>
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      className="bg-white text-purple-900 hover:bg-gray-100"
-                    >
-                      Download Catalog
                     </Button>
                   </div>
 
