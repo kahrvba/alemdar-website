@@ -199,19 +199,6 @@ export default function ProductCategories() {
       <section
         ref={heroRef}
         className="relative min-h-[80vh] flex items-center pt-24 pb-12 md:pt-32 md:pb-16 text-white"
-        onClick={() => {
-          const categoriesSection = document.getElementById('categories-section');
-          if (categoriesSection) {
-            categoriesSection.scrollIntoView({ behavior: 'smooth' });
-            setTimeout(() => {
-              toast.info("Scroll Down", {
-                description: "Scroll down to discover more categories",
-                duration: 2000,
-                className: "bg-purple-900/80 text-white border-purple-500",
-              });
-            }, 1000);
-          }
-        }}
       >
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(67,56,202,0.2),rgba(12,10,9,0))]"></div>
 
@@ -247,11 +234,19 @@ export default function ProductCategories() {
                   className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white cursor-pointer"
                   onClick={() => {
                     const categoriesSection = document.getElementById('categories-section');
-                    if(categoriesSection){
-                      categoriesSection.scrollIntoView({behavior:'smooth'});
-                    }
-                  }}
-                >
+                      if (categoriesSection) {
+                        categoriesSection.scrollIntoView({ behavior: 'smooth' });
+                        setTimeout(() => {
+                        toast.info("Scroll Down", {
+                        description: "Scroll down to discover more categories",
+                        duration: 2000,
+                        className: "bg-purple-900/80 text-white border-purple-500",
+                      });
+                    }, 1000);
+                  }
+                }
+              }
+              >
                   Browse All Products <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </div>
@@ -343,10 +338,18 @@ export default function ProductCategories() {
           <span className="text-sm text-gray-700 cursor-pointer hover:text-purple-500 transition-colors"
                 onClick={() => {
                   const categoriesSection = document.getElementById('categories-section');
-                  if(categoriesSection){
-                    categoriesSection.scrollIntoView({behavior:'smooth'});
-                  }
-                }}
+                    if (categoriesSection) {
+                      categoriesSection.scrollIntoView({ behavior: 'smooth' });
+                      setTimeout(() => {
+                      toast.info("Scroll Down", {
+                      description: "Scroll down to discover more categories",
+                      duration: 2000,
+                      className: "bg-purple-900/80 text-white border-purple-500",
+                    });
+                  }, 1000);
+                }
+              }
+            }
           >Scroll to explore</span>
         </div>
       </section>
